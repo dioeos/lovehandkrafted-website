@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  lhk_django_backend:
+    build:  # ✅ Fix extra colon
+      context: ./backend
+    container_name: lhk_django_backend
+    ports:
+      - "8000:8000"
+    command: ["sh", "./start.sh"]
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - postgres_db
+
+  postgres_db:  # ✅ Move it out from under "web"
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./backend/.env
+    # environment:
+    #   - POSTGRES_DB=${POSTGRES_DB_NAME}
+    #   - POSTGRES_USER=${POSTGRES_USERNAME}
+    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  lhk_react_frontend:
+    build:
+      context: ./frontend
+    container_name: lhk_react_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_HOST=0.0.0.0
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    depends_on:
+      - lhk_django_backend
+
+
+
+
+volumes:
+  postgres_data:

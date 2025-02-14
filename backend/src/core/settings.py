@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': config("POSTGRES_DB_NAME"),
         'USER': config("POSTGRES_USERNAME"),
         'PASSWORD': config("POSTGRES_PASSWORD"),
-        'HOST': "backend_postgres_db_1",
+        'HOST': config("POSTGRES_HOST"),
         'PORT': config("POSTGRES_PORT")
     }
 }

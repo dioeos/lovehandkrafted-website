@@ -2,7 +2,7 @@
 
 React + Vite frontend for the Lovehandkrafted eCommerce website.
 
-The backend is built using React, Vite, and Tailwind CSS. The backend is avaiable [https://github.com/ryandioneda/lovehandkrafted-website/tree/master/backend](here)
+The backend is built using React, Vite, and Tailwind CSS. The backend is avaiable [here](https://github.com/ryandioneda/lovehandkrafted-website/tree/master/backend)
 
 ## Main Dependencies
 1. `Node.js` 22.12

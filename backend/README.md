@@ -2,7 +2,7 @@
 
 Django backend for the Lovehandkrafted eCommerce website.
 
-The backend is built using Django REST Framework to provide the backend API for the eCommerce website. The frontend is available [https://github.com/ryandioneda/lovehandkrafted-website/tree/master/frontend](here).
+The backend is built using Django REST Framework to provide the backend API for the eCommerce website. The frontend is available [here](https://github.com/ryandioneda/lovehandkrafted-website/tree/master/frontend).
 
 ## Main Dependencies
 1. `python` >= 3.12

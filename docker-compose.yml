@@ -35,7 +35,7 @@ services:
   reverse_proxy:
     build: ./nginx
     ports:
-      - 81:80
+      - 80:80
     depends_on:
       - lhk_django_backend
       - lhk_react_frontend

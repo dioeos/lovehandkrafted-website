@@ -1,162 +1,75 @@
 import React from "react";
+import LoginForm from "./components/LoginForm/LoginForm";
+import AuthenticatedView from "./components/AuthenticatedView/AuthenticatedView";
+import { getCSRF, getSession, whoami, login, logout } from "./utils/authentication/auth";
+import Nav from "./components/Nav/Nav";
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            csrf: "",
+            username: "",
+            password: "",
+            error: "",
+            isAuthenticated: false,
+        };
+    }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      csrf: "",
-      username: "",
-      password: "",
-      error: "",
-      isAuthenticated: false,
+    componentDidMount = async () => {
+        const sessionData = await getSession();
+        if (sessionData.isAuthenticated) {
+            this.setState({ isAuthenticated: true });
+        } else {
+            this.setState({ isAuthenticated: false });
+            const csrfToken = await getCSRF();
+            this.setState({ csrf: csrfToken });
+        }
     };
-  }
 
-  componentDidMount = () => {
-    this.getSession();
-  }
+    handleLogin = async (username, password) => {
+        try {
+            await login(username, password, this.state.csrf);
+            this.setState({ isAuthenticated: true, username: "", password: "", error: "" });
+        } catch (error) {
+            this.setState({ error: "Wrong username or password." });
+        }
+    };
 
-  getCSRF = () => {
-    fetch("/api/authentication/csrf/", {
-      credentials: "same-origin",
-    })
-    .then((res) => {
-      let csrfToken = res.headers.get("X-CSRFToken");
-      this.setState({csrf: csrfToken});
-      console.log(csrfToken);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+    handleLogout = async () => {
+        try {
+            await logout();
+            const csrfToken = await getCSRF();
+            this.setState({ isAuthenticated: false, csrf: csrfToken });
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-  getSession = () => {
-    fetch("/api/authentication/session/", {
-      credentials: "same-origin",
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      if (data.isAuthenticated) {
-        this.setState({isAuthenticated: true});
-      } else {
-        this.setState({isAuthenticated: false});
-        this.getCSRF();
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+    render() {
+        return (
 
-  whoami = () => {
-    fetch("/api/authentication/whoami/", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "same-origin",
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("You are logged in as: " + data.username);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
-
-  handlePasswordChange = (event) => {
-    this.setState({password: event.target.value});
-  }
-
-  handleUserNameChange = (event) => {
-    this.setState({username: event.target.value});
-  }
-
-  isResponseOk(response) {
-    if (response.status >= 200 && response.status <= 299) {
-      return response.json();
-    } else {
-      throw Error(response.statusText);
-    }
-  }
-
-  login = (event) => {
-    event.preventDefault();
-    fetch("/api/authentication/login/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": this.state.csrf,
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({username: this.state.username, password: this.state.password}),
-    })
-    .then(this.isResponseOk)
-    .then((data) => {
-      console.log(data);
-      this.setState({isAuthenticated: true, username: "", password: "", error: ""});
-    })
-    .catch((err) => {
-      console.log(err);
-      this.setState({error: "Wrong username or password."});
-    });
-  }
-
-  logout = () => {
-    fetch("/api/authentication/logout", {
-      credentials: "same-origin",
-    })
-    .then(this.isResponseOk)
-    .then((data) => {
-      console.log(data);
-      this.setState({isAuthenticated: false});
-      this.getCSRF();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  };
-
-  render() {
-    if (!this.state.isAuthenticated) {
-      return (
-        <div className="container mt-3">
-          <h1>React Cookie Auth</h1>
-          <br />
-          <h2>Login</h2>
-          <form onSubmit={this.login}>
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <input type="text" className="form-control" id="username" name="username" value={this.state.username} onChange={this.handleUserNameChange} />
+            <div className="">
+              <Nav />
+              {/* <div>
+                <h1>React Cookie Auth</h1>
+                {!this.state.isAuthenticated ? (
+                    <LoginForm
+                        username={this.state.username}
+                        password={this.state.password}
+                        error={this.state.error}
+                        onLogin={this.handleLogin}
+                        onUsernameChange={(e) => this.setState({ username: e.target.value })}
+                        onPasswordChange={(e) => this.setState({ password: e.target.value })}
+                    />
+                ) : (
+                    <AuthenticatedView whoami={whoami} logout={this.handleLogout} />
+                )}
+ 
+              </div> */}
             </div>
-            <div className="form-group">
-              <label htmlFor="username">Password</label>
-              <input type="password" className="form-control" id="password" name="password" value={this.state.password} onChange={this.handlePasswordChange} />
-              <div>
-                {this.state.error &&
-                  <small className="text-danger">
-                    {this.state.error}
-                  </small>
-                }
-              </div>
-            </div>
-            <button type="submit" className="btn btn-primary">Login</button>
-          </form>
-        </div>
-      );
+        );
     }
-    return (
-      <div className="container mt-3">
-        <h1>React Cookie Auth</h1>
-        <p>You are logged in!</p>
-        <button className="btn btn-primary mr-2" onClick={this.whoami}>WhoAmI</button>
-        <button className="btn btn-danger" onClick={this.logout}>Log out</button>
-      </div>
-    )
-  }
 }
 
 export default App;

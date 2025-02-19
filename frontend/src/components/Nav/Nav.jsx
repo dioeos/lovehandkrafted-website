@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { opacity } from "./anim";
+
+import Menu from "./Menu";
 
 const path01Variants = {
     open: { d: "M3.06061 2.99999L21.0606 21" },
@@ -76,10 +78,22 @@ const Nav = () => {
                             <p className="">Cart</p>
                     </div>
                 </motion.div>
-
             </div>
+                {/* <AnimatePresence mode="wait">
+                    {isActive && (
+                        <motion.div className="absolute top-full left-0 w-full">
+                            <Menu />
+                        </motion.div>
 
-
+                    )}
+                </AnimatePresence> */}
+                <AnimatePresence mode="wait">
+                    {isActive && (
+                        <div className="overflow-hidden">
+                            <Menu />
+                        </div>
+                    )}
+                </AnimatePresence>
 
         </div>
     )

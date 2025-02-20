@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { blur, translate } from './anim';
+import { Link } from 'react-router-dom';
 
 
 const Body = ({links, selectedLink, setSelectedLink}) => {
@@ -29,7 +30,7 @@ const Body = ({links, selectedLink, setSelectedLink}) => {
                     const { title, href } = link;
                     return (
 
-                    <a key={`l_${index}`} href={href} className='' style={{textDecoration: "none", color: "#0B1215"}}>
+                    <Link key={`l_${index}`} to={href} className='' style={{textDecoration: "none", color: "#0B1215"}}>
 
                         <motion.p
                             onMouseOver={() => {setSelectedLink({isActive: true, index})}} 
@@ -41,7 +42,7 @@ const Body = ({links, selectedLink, setSelectedLink}) => {
                             {getChars(title)}
                         </motion.p>
 
-                    </a>
+                    </Link>
                     )
                 })
             }

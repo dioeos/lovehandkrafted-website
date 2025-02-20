@@ -14,13 +14,13 @@ const links = [
 
     {
         title: "Shop",
-        href: "/",
+        href: "/shop",
         src: "home.png"
     }, 
 
     {
         title: "About",
-        href: "/",
+        href: "/about",
         src: "home.png"
     }, 
 
@@ -32,13 +32,13 @@ const links = [
 
     {
         title: "Login",
-        href: "/",
+        href: "/login",
         src: "home.png"
     }, 
 
     {
         title: "FAQ",
-        href: "/",
+        href: "/faq",
         src: "home.png"
     }, 
 

@@ -23,7 +23,7 @@ const Body = ({links, selectedLink, setSelectedLink}) => {
     }
 
     return (
-        <div className='flex flex-wrap mt-[40px] max-w-full md:max-w-[1200px] uppercase text-[#0B1215] w-full'>
+        <div className='flex flex-wrap mt-[40px] max-w-full md:max-w-[1200px] uppercase text-[#0B1215]'>
             {
                 links.map( (link, index) => {
                     const { title, href } = link;
@@ -36,7 +36,7 @@ const Body = ({links, selectedLink, setSelectedLink}) => {
                             onMouseLeave={() => {setSelectedLink({isActive: false, index})}} 
                             variants={blur} 
                             animate={selectedLink.isActive && selectedLink.index != index ? "open" : "closed"}
-                            className='m-0 flex overflow-hidden text-2xl md:text-4xl lg:text-8xl pr-[48px] pt-[10px] font-light'
+                            className='m-0 flex flex-wrap overflow-hidden text-2xl md:text-4xl lg:text-7xl pr-[48px] pt-[10px] font-light'
                         >
                             {getChars(title)}
                         </motion.p>

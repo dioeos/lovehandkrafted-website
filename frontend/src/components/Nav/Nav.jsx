@@ -89,7 +89,7 @@ const Nav = () => {
                 </AnimatePresence> */}
                 <AnimatePresence mode="wait">
                     {isActive && (
-                        <div className="overflow-hidden">
+                        <div className="">
                             <Menu />
                         </div>
                     )}

@@ -75,20 +75,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-              {/* <div>
-                <h1>React Cookie Auth</h1>
-                {!this.state.isAuthenticated ? (
-                    <LoginForm
-                        username={this.state.username}
-                        password={this.state.password}
-                        error={this.state.error}
-                        onLogin={this.handleLogin}
-                        onUsernameChange={(e) => this.setState({ username: e.target.value })}
-                        onPasswordChange={(e) => this.setState({ password: e.target.value })}
-                    />
-                ) : (
-                    <AuthenticatedView whoami={whoami} logout={this.handleLogout} />
-                )}
- 
-              </div> */}

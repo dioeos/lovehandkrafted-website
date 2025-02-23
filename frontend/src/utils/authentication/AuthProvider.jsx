@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react";    
+import { useState, useEffect, createContext, useContext } from "react";    
 import {jwtDecode} from 'jwt-decode';
 import api from "../lib/api";
 import { ACCESS_TOKEN, REFRESH_TOKEN, GOOGLE_ACCESS_TOKEN } from "../../token";
 
-export const useAuthentication = () => {
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
     const [isAuthorized, setIsAuthorized] = useState(false);
 
     useEffect(() => {
         const auth = async () => {
             const token = localStorage.getItem(ACCESS_TOKEN);
-            const googleAccessToken = localStorage.getItem(GOOGLE_ACCESS_TOKEN)
+            const googleAccessToken = localStorage.getItem(GOOGLE_ACCESS_TOKEN);
 
-            console.log('ACCESS_TOKEN', token);
-            console.log('GOOGLE_ACCESS_TOKEN', googleAccessToken);
+            console.log('TOKEN:', token);
+            console.log('GOOGLE TOKEN:', googleAccessToken);
 
             if (token) {
                 const decoded = jwtDecode(token);
@@ -20,8 +22,8 @@ export const useAuthentication = () => {
                 const now = Date.now() / 1000;
 
                 if (tokenExpiration < now) {
+                    //! CHECK IF THIS WORKS????
                     await refreshToken();
-
                 } else {
                     setIsAuthorized(true);
                 }
@@ -37,9 +39,8 @@ export const useAuthentication = () => {
                 setIsAuthorized(false);
             }
         };
-        auth().catch(() => setIsAuthorized(false)); //
-    }, []); 
-
+        auth().catch(() => setIsAuthorized(false));
+    }, []);
 
 
     const refreshToken = async () => {
@@ -96,5 +97,12 @@ export const useAuthentication = () => {
         window.location.reload();
     }
 
-    return { isAuthorized, logout };
+    return (
+        <AuthContext.Provider value={{ isAuthorized, logout }}>
+            {children}
+        </AuthContext.Provider>
+    )
+
 }
+
+export const useAuth = () => useContext(AuthContext);

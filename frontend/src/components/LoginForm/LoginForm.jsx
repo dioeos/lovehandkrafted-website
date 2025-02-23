@@ -24,6 +24,7 @@ const AuthForm = ({ route, method }) => {
             if (method === 'login') {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                console.log("successfully logged in!")
                 navigate("/");
                 window.location.reload();
             } else {

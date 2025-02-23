@@ -5,13 +5,12 @@ import Body from "./Body";
 
 import Footer from "./Footer";
 
-import { useAuthentication } from "../../utils/authentication/auth";
-
+import { useAuth } from "../../utils/authentication/AuthProvider";
 
 const Menu = () => {
 
     const [selectedLink, setSelectedLink] = useState({isActive: false, index: 0});
-    const { isAuthorized } = useAuthentication();
+    const { isAuthorized } = useAuth();
 
     const links = [
         {

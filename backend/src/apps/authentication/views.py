@@ -25,6 +25,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
 import json
 
 DOMAIN = 'http://localhost'
@@ -43,6 +44,19 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+    
+def logout_view(request):
+    try:
+        refresh_token = request.data.get('refresh_token')
+        if not refresh_token:
+            return Response({'detail': 'Refresh token is required'}, status=400)
+        
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+
+        return Response({'detail': 'Successfully logged out'}, status=200)
+    except Exception as e:
+        return Response({'detail': str(e)}, status=400)
     
 #to redirect back to frontend
 @login_required

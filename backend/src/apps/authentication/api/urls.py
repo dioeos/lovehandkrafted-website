@@ -18,5 +18,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('callback/', views.google_login_callback, name='callback'),
     path('auth/user/', views.UserDetailView.as_view(), name='user_detail'),
-    path('google/validate_token', views.validate_google_token)
+    path('google/validate_token', views.validate_google_token),
+    path('logout/', views.logout_view, name='logout'),
 ]

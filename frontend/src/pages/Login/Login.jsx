@@ -1,35 +1,21 @@
-import LoginForm from "../../components/LoginForm/LoginForm";
+import { useState, useEffect } from "react";
+import AuthForm from "../../components/LoginForm/LoginForm";
 
 
-const Login = ({ username, password, error, onLogin, onUsernameChange, onPasswordChange }) => {
-    console.log("Login")
+const Login = ({ initialMethod }) => {
+    const [method, setMethod] = useState(initialMethod)
+
+
+    useEffect(() => {
+        setMethod(initialMethod);
+    }, [initialMethod]);
+
+    const route = method === 'login' ?  '/authentication/token/': '/authentication/user/register/';
+
     return (
-        <div id="login-root" className="h-screen bg-blue-500 p-10">
-            <LoginForm/>
-
+        <div>
+            <AuthForm route={route} method={method} />
         </div>
-
     )
-
 }
-
 export default Login;
-
-
-
-              {/* <div>
-                <h1>React Cookie Auth</h1>
-                {!this.state.isAuthenticated ? (
-                    <LoginForm
-                        username={this.state.username}
-                        password={this.state.password}
-                        error={this.state.error}
-                        onLogin={this.handleLogin}
-                        onUsernameChange={(e) => this.setState({ username: e.target.value })}
-                        onPasswordChange={(e) => this.setState({ password: e.target.value })}
-                    />
-                ) : (
-                    <AuthenticatedView whoami={whoami} logout={this.handleLogout} />
-                )}
- 
-              </div> */}

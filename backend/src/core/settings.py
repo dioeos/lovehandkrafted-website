@@ -29,7 +29,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["backend", "localhost"]
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     #my apps
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'apps.authentication',
 
     'rest_framework.authtoken',
@@ -53,7 +54,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
+    #"allauth.socialaccount.providers.google",
     #"allauth.mfa",
     # "allauth.headless",
     # "allauth.usersessions",
@@ -145,6 +146,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 
 
@@ -178,14 +180,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CSRF_COOKIE_HTTPONLY = True
 # SESSION_COOKIE_HTTPONLY = True
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:81',
-    'http://localhost:80',
+    'http://localhost',
     #'https://productionurl.com'
 ]
 
 #* Prod only
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
+
+SITE_ID = 1
 
 
 #? ALLAUTH
@@ -198,18 +201,7 @@ AUTHENTICATION_BACKENDS = ([
 ])
 
 
-LOGIN_REDIRECT_URL = '/callback'
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': ['email', 'profile'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-        'OAUTH_PKCE_ENABLED': True,
-        'FETCH_USERINFO': True,
-    }
-}
-
-SOCIALACCOUNT_STORE_TOKENS = True
 
 
 # ACCOUNT_EMAIL_REQUIRED = True

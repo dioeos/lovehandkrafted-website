@@ -1,9 +1,25 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../utils/authentication/AuthProvider";
+
 import AuthForm from "../../components/LoginForm/LoginForm";
 
 
+
 const Login = ({ initialMethod }) => {
-    const [method, setMethod] = useState(initialMethod)
+    const [method, setMethod] = useState(initialMethod);
+
+    const { isAuthorized } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthorized) {
+            navigate("/profile");
+        }
+    }, [isAuthorized, navigate])
+
+
+
 
 
     useEffect(() => {

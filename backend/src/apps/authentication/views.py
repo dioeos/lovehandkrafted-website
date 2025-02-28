@@ -22,6 +22,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from allauth.socialaccount.models import SocialToken, SocialAccount
 from django.contrib.auth.decorators import login_required
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -44,115 +45,60 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
-    
-def logout_view(request):
-    try:
-        refresh_token = request.data.get('refresh_token')
-        if not refresh_token:
-            return Response({'detail': 'Refresh token is required'}, status=400)
-        
-        token = RefreshToken(refresh_token)
-        token.blacklist()
 
-        return Response({'detail': 'Successfully logged out'}, status=200)
-    except Exception as e:
-        return Response({'detail': str(e)}, status=400)
+# @api_view(['POST'])
+# def logout_view(request):
+#     try:
+#         refresh_token = request.data.get('refresh_token')
+#         if not refresh_token:
+#             return Response({'detail': 'Refresh token is required'}, status=400)
+        
+#         token = RefreshToken(refresh_token)
+#         token.blacklist()
+
+#         return Response({'detail': 'Successfully logged out'}, status=200)
+#     except Exception as e:
+#         return Response({'detail': str(e)}, status=400)
     
 #to redirect back to frontend
-@login_required
-def google_login_callback(request):
-    user = request.user
-    social_accounts = SocialAccount.objects.filter(user=user)
-    print("Social Account for user:", social_accounts)
+#! once django-allauth processes login, backend logs in user
+#* checks if user has Google account, retrieves Google access token, generates JWT token (frontend auth), redirects to frontend w/ token
+# @login_required
+# def google_login_callback(request):
+#     user = request.user
+#     social_accounts = SocialAccount.objects.filter(user=user)
+#     print("Social Account for user:", social_accounts)
 
-    social_account = social_accounts.first()
+#     social_account = social_accounts.first()
 
-    if not social_account:
-        print("No social account for user:", user)
-        return redirect(f'{DOMAIN}/login/callback/?error=NoSocialAccount')
+#     if not social_account:
+#         print("No social account for user:", user)
+#         return redirect(f'{DOMAIN}/login/callback/?error=NoSocialAccount')
     
-    token = SocialToken.objects.filter(account=social_account, account__providers='google').first()
+#     token = SocialToken.objects.filter(account=social_account, account__providers='google').first()
 
-    if token:
-        print('Google token found:', token.token)
-        refresh = RefreshToken.for_user(user)
-        access_token = str(refresh.access_token)
-        return redirect(f'{DOMAIN}/login/callback/?access_token={access_token}')
-    else:
-        print('No google topken found for user:', user)
-        return redirect(f'{DOMAIN}/login/callback/?error=NoGoogleToken')
+#     if token:
+#         print('Google token found:', token.token)
+#         refresh = RefreshToken.for_user(user)
+#         access_token = str(refresh.access_token)
+#         return redirect(f'{DOMAIN}/login/callback/?access_token={access_token}')
+#     else:
+#         print('No google topken found for user:', user)
+#         return redirect(f'{DOMAIN}/login/callback/?error=NoGoogleToken')
 
-@csrf_exempt
-def validate_google_token(request):
-    if request.method == 'POST':
-        try:
-            data= json.loads(request.body)
-            google_access_token = data.get('access_token')
-            print(google_access_token)
+# @csrf_exempt
+# def validate_google_token(request):
+#     if request.method == 'POST':
+#         try:
+#             data= json.loads(request.body)
+#             google_access_token = data.get('access_token')
+#             print(google_access_token)
 
-            if not google_access_token:
-                return JsonResponse({'detail': 'Access Token is missing'}, status=400)
-            return JsonResponse({'valid': True})
-        except json.JSONDecodeError:
-            return JsonResponse({'detail': 'Invalid JSON'}, status=400)
-    return JsonResponse({'detail': 'Method not allowed'}, status=405)
-
-
-# def get_csrf(request):
-#     response = JsonResponse({'detail': 'CSRF cookie set'})
-#     response['X-CSRFToken'] = get_token(request)
-#     return response
+#             if not google_access_token:
+#                 return JsonResponse({'detail': 'Access Token is missing'}, status=400)
+#             return JsonResponse({'valid': True})
+#         except json.JSONDecodeError:
+#             return JsonResponse({'detail': 'Invalid JSON'}, status=400)
+#     return JsonResponse({'detail': 'Method not allowed'}, status=405)
 
 
-# @require_POST
-# def login_view(request):
-#     data = json.loads(request.body)
-#     username = data.get('username')
-#     password = data.get('password')
-
-#     if username is None or password is None:
-#         return JsonResponse({'detail': 'Please provide username and password.'}, status=400)
-
-#     user = authenticate(username=username, password=password)
-
-#     if user is None:
-#         return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
-
-#     login(request, user)
-#     return JsonResponse({'detail': 'Successfully logged in.'})
-
-
-# def logout_view(request):
-#     if not request.user.is_authenticated:
-#         return JsonResponse({'detail': 'You\'re not logged in.'}, status=400)
-
-#     logout(request)
-#     return JsonResponse({'detail': 'Successfully logged out.'})
-
-
-# class SessionView(APIView):
-#     authentication_classes = [SessionAuthentication, BasicAuthentication]
-#     permission_classes = [IsAuthenticated]
-
-#     @staticmethod
-#     def get(request, format=None):
-#         return JsonResponse({'isAuthenticated': True})
-
-
-# class WhoAmIView(APIView):
-#     authentication_classes = [SessionAuthentication, BasicAuthentication]
-#     permission_classes = [IsAuthenticated]
-
-#     @staticmethod
-#     def get(request, format=None):
-#         return JsonResponse({'username': request.user.username})
-
-
-# class AddAPIView(APIView):
-#     def post(self, request):
-#         serializer = serializers.AddSerializer(data=request.data)
-#         if serializer.is_valid():
-#             x = serializer.validated_data["x"]
-#             y = serializer.validated_data["y"]
-#             return Response({"result": x + y}, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

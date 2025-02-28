@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     const refreshToken = async () => {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
         try {
-            const res = await api.post('/api/authentication/token/refresh/', {
+            const res = await api.post('/authentication/token/refresh/', {
                 refresh: refreshToken,
             });
             if (res.status === 200) {
@@ -79,15 +79,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+        // const refreshToken = localStorage.getItem(REFRESH_TOKEN);
 
-        if (refreshToken) {
-            try {
-                await api.post('/api/authentication/logout', { refresh_token: refreshToken});
-            } catch (error) {
-                console.error("Error logging out:", error)
-            }
-        }
+        // if (refreshToken) {
+        //     try {
+        //         console.log("Refresh token", refreshToken)
+        //         await api.post('/authentication/logout', { refresh_token: refreshToken});
+        //     } catch (error) {
+        //         console.error("Error logging out:", error)
+        //     }
+        // }
 
         //clear tokens from local storage after making request
         localStorage.removeItem(ACCESS_TOKEN);

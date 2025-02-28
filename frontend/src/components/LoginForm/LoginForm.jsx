@@ -53,9 +53,9 @@ const AuthForm = ({ route, method }) => {
         }
     };
 
-    const handleGoogleLogin = () => {
-        window.location.href = "http://localhost/accounts/google/login/";
-    };
+    // const handleGoogleLogin = () => {
+    //     window.location.href = "http://localhost/accounts/google/login/";
+    // };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -100,14 +100,14 @@ const AuthForm = ({ route, method }) => {
                         {loading ? "Processing..." : method === 'register' ? 'Register' : 'Login'}
                     </button>
 
-                    <button 
+                    {/* <button 
                         type="button" 
                         className="w-full flex items-center justify-center border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition"
                         onClick={handleGoogleLogin}
                     >
                         <img src={google} alt="Google icon" className="w-5 h-5 mr-2" />
                         {method === 'register' ? 'Register with Google' : 'Login with Google'}
-                    </button>
+                    </button> */}
 
                     {method === 'login' && (
                         <p className="text-sm text-gray-600 text-center">

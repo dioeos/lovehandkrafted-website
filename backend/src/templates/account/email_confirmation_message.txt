@@ -1,0 +1,10 @@
+Hello from [Your App Name]!
+
+You're receiving this email because {{ user.email }} has registered an account on [Your App Name].
+
+To confirm your email, click the link below:
+{{ activate_url }}
+
+If you did not sign up for this account, you can ignore this email.
+
+Thank you for using [Your App Name]!

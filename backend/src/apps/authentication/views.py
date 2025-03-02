@@ -45,6 +45,15 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+    
+
+from allauth.account.views import ConfirmEmailView 
+class CustomConfirmEmailView(ConfirmEmailView):
+    template_name = "account/email_confirmation_signup_message.html"
+
+    def get_template_names(self):
+        return [self.template_name]
+
 
 # @api_view(['POST'])
 # def logout_view(request):

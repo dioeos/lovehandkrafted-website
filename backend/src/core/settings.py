@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'drf_spectacular',
+
     #my apps
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
@@ -79,7 +81,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +132,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #! ADDED
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
@@ -141,6 +145,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ]
+}
+
+REST_AUTH = {
+    'REGISTER_SERIALIZER': "apps.authentication.api.serializers.CustomRegisterSerializer",
+    'USER_DETAILS_SERIALIZER': 'apps.authentication.api.serializers.UserSerializer'
 }
 
 SIMPLE_JWT = {
@@ -191,41 +200,34 @@ CSRF_TRUSTED_ORIGINS = [
 SITE_ID = 1
 
 
-#? ALLAUTH
-EMAIL_HOST = "mail"
-EMAIL_PORT = 1025
-
 AUTHENTICATION_BACKENDS = ([
-    "allauth.account.auth_backends.AuthenticationBackend",
+    #"allauth.account.auth_backends.AuthenticationBackend",
     'django.contrib.auth.backends.ModelBackend',
 ])
 
 
+#ACCOUNT_AUTHENTICATION_METHOD = "email"
+
+#! custom user model to plug into Django's authentication system
+AUTH_USER_MODEL = "authentication.User"
+
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+LOGIN_URL = "/admin"
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "lovehandkraftedteam@gmail.com"
+EMAIL_HOST_PASSWORD = "spmx yiyq rvqu pjaw"
+ACCOUNT_EMAIL_CONFIRMATION_TEMPLATE = "templates/account/email_confirmation_message.txt"
 
 
-
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# ACCOUNT_LOGIN_METHOD = {"email"}
-# ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = False
-# ACCOUNT_LOGIN_BY_CODE_ENABLED = True
-# ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
-
-# HEADLESS_ONLY = True
-
-# HEADLESS_FRONTEND_URLS = {
-#     "account_confirm_email": "/account/verify-email/{key}",
-#     "account_reset_password": "/account/password/reset",
-#     "account_reset_password_from_key": "/account/password/reset/key/{key}",
-#     "account_signup": "/account/signup",
-# }
-
-# HEADLESS_SERVE_SPECIFICATION = True
-
-# MFA_SUPPORTED_TYPES = ["totp", "recovery_codes", "webauthn"]
-# MFA_PASSKEY_LOGIN_ENABLED = True
-# MFA_PASSKEY_SIGNUP_ENABLED = True
-
-# REST_FRAMEWORK = {
-#     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-# }

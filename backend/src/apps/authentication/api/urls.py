@@ -18,6 +18,7 @@ urlpatterns = [
         views.CustomConfirmEmailView.as_view(),
         name="account_confirm_email",
     ),
+    path("dj-rest-auth/logout", views.CustomLogoutView.as_view()),
     #path('dj-rest-auth/account-confirm-email/<str:key>/', views.CustomConfirmEmailView.as_view(), name='account_confirm_email'),
 
     path("dj-rest-auth/registration/", include("dj_rest_auth.registration.urls"))

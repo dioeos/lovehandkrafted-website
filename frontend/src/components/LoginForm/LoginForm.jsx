@@ -4,53 +4,80 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../token";
 import google from "../../assets/google.png";
 
+import { useAuth } from "../../utils/authentication/AuthProvider";
+
 const AuthForm = ({ route, method }) => {
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
 
+    const { handleLogin, isAuthorized } = useAuth();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
         setError(null);
         setSuccess(null);
+        await handleLogin(email, password);
 
         try {
-            const res = await api.post(route, { username, password });
+            const response = await handleLogin(email, password)
 
-            if (method === 'login') {
-                localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                console.log("successfully logged in!")
-                navigate("/");
-                window.location.reload();
-            } else {
-                setSuccess("Registration successful. Please login.");
-                setTimeout(() => {
-                    navigate("/login");
-                }, 2000);
-            }
         } catch (error) {
-            console.error(error);
+            console.error("Login form error:", error);
             if (error.response) {
                 if (error.response.status === 401) {
                     setError("Invalid credentials");
-                } else if (error.response.status === 400) {
-                    setError("Username already exists");
+                } else if  (error.response.status === 400) {
+                    setError("Email already has an account");
                 } else {
-                    setError("Something went wrong. Please try again.");
+                    setError("Something went wrong. Please contact the Lovehandkrafted Team.");
                 }
             } else if (error.request) {
                 setError("Network error. Please check your internet connection.");
             } else {
-                setError("Something went wrong. Please try again.");
+                setError("Something went wrong. Please contact the Lovehandkrafted Team.")
             }
         } finally {
             setLoading(false);
         }
+
+        // try {
+        //     const res = await api.post(route, { username, password });
+
+        //     if (method === 'login') {
+        //         localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        //         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        //         console.log("successfully logged in!")
+        //         navigate("/");
+        //         window.location.reload();
+        //     } else {
+        //         setSuccess("Registration successful. Please login.");
+        //         setTimeout(() => {
+        //             navigate("/login");
+        //         }, 2000);
+        //     }
+        // } catch (error) {
+        //     console.error(error);
+        //     if (error.response) {
+        //         if (error.response.status === 401) {
+        //             setError("Invalid credentials");
+        //         } else if (error.response.status === 400) {
+        //             setError("Username already exists");
+        //         } else {
+        //             setError("Something went wrong. Please try again.");
+        //         }
+        //     } else if (error.request) {
+        //         setError("Network error. Please check your internet connection.");
+        //     } else {
+        //         setError("Something went wrong. Please try again.");
+        //     }
+        // } finally {
+        //     setLoading(false);
+        // }
     };
 
     // const handleGoogleLogin = () => {
@@ -69,12 +96,12 @@ const AuthForm = ({ route, method }) => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="username" className="block text-gray-700 font-medium">Username:</label>
+                        <label htmlFor="email" className="block text-gray-700 font-medium">Email:</label>
                         <input 
                             type="text" 
-                            id="username" 
-                            value={username} 
-                            onChange={(e) => setUsername(e.target.value)} 
+                            id="email" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
                             required 
                             className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />

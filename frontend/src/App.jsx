@@ -36,31 +36,6 @@ function App() {
 
         </AuthProvider>
     )
-    // const { isAuthorized } = useAuthentication();
-
-    // const ProtectedLogin = () => (isAuthorized ? <Navigate to="/" /> : <Login initialMethod="login" />);
-    // const ProtectedRegister = () => (isAuthorized ? <Navigate to="/" /> : <Login initialMethod="register" />);
-
-    // return (
-    //     <Router>
-    //         <Nav />
-    //         <Routes>
-    //             <Route path="/" element={<Index />} />
-    //             <Route path="/about" element={<About />} />
-    //             <Route path="/shop" element={<Shop />} />
-    //             <Route path="/faq" element={<Faq />} />
-    //             <Route path="/contact" element={<Contact />} />
-
-    //             <Route path="/profile" element={<Profile />} />
-
-
-    //             {/* <Route path="/login/callback" element={<RedirectGoogleAuth />} /> */}
-    //             <Route path="/login" element={<ProtectedLogin />} />
-    //             <Route path="/register" element={<ProtectedRegister />} />
-    //             <Route path="*" element={<Navigate to="/" replace />} /> {/* Redirect unknown routes */}
-    //         </Routes>
-    //     </Router>
-    // );
 }
 
 export default App;

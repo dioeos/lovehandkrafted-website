@@ -65,7 +65,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', #! must be present for admin application
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -138,24 +138,39 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
+    
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework_simplejwt.authentication.JWTAuthentication'
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+
+    #? COMMENTED
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
 }
 
 REST_AUTH = {
     'REGISTER_SERIALIZER': "apps.authentication.api.serializers.CustomRegisterSerializer",
-    'USER_DETAILS_SERIALIZER': 'apps.authentication.api.serializers.UserSerializer'
+    'USER_DETAILS_SERIALIZER': 'apps.authentication.api.serializers.UserSerializer',
+    'LOGIN_SERIALIZER': "apps.authentication.api.serializers.CustomLoginSerializer",
+    "SESSION_LOGIN": False,
+
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "jwt-access-token",
+    "JWT_AUTH_REFRESH_COOKIE": "jwt-refresh-token",
+    "JWT_AUTH_SECURE": True,
+    "JWT_AUTH_HTTPONLY": True, 
 }
 
+
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'BLACKLIST_AFTER_ROTATION': True,
+
+    #? ADDED
+    'SIGNING_KEY': config('JWT_SIGNING_KEY')
 }
 
 
@@ -206,7 +221,6 @@ AUTHENTICATION_BACKENDS = ([
 ])
 
 
-#ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 #! custom user model to plug into Django's authentication system
 AUTH_USER_MODEL = "authentication.User"
@@ -226,8 +240,14 @@ LOGIN_URL = "/admin"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "lovehandkraftedteam@gmail.com"
-EMAIL_HOST_PASSWORD = "spmx yiyq rvqu pjaw"
+EMAIL_HOST_USER = config('GOOGLE_SMTP_APP_EMAIL')
+EMAIL_HOST_PASSWORD = config('GOOGLE_SMTP_APP_PASS')
 ACCOUNT_EMAIL_CONFIRMATION_TEMPLATE = "templates/account/email_confirmation_message.txt"
 
-
+#? ADDED
+SPECTACULAR_SETTINGS = {
+    #'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAdminUser'],  # Only admin users
+    'SERVE_AUTHENTICATION': [
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    ]
+}

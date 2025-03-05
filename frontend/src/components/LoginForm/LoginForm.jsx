@@ -5,8 +5,11 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../token";
 import google from "../../assets/google.png";
 
 import { useAuth } from "../../utils/authentication/AuthProvider";
+import Login from "../../pages/Login/Login";
 
 const AuthForm = ({ route, method }) => {
+    // login.jsx decides which route - login or register
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -14,39 +17,56 @@ const AuthForm = ({ route, method }) => {
     const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
 
-    const { handleLogin, isAuthorized } = useAuth();
+    const { handleLogin, handleLogout, isAuthorized } = useAuth();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
         setError(null);
         setSuccess(null);
-        await handleLogin(email, password);
 
         try {
-            const response = await handleLogin(email, password)
+            //const response = await handleLogin(email, password)
+            //* route is either '/authentication/dj-rest-auth/login/ or '/authentication/dj-rest-auth/registration
+            //const res = await api.post(route, {email, password});
+
+            if (method === 'login') {
+                const success = await handleLogin(email, password)
+
+                if (success) {
+
+                }
+                console.log("successfully logged in")
+            } else {
+                const res = await api.post(route, {email, password});
+                setSuccess("Registration successful. Please login");
+                setTimeout(() => {
+                    navigate("/login");
+                }, 2000);
+            }
 
         } catch (error) {
-            console.error("Login form error:", error);
+            console.error(error);
+
             if (error.response) {
                 if (error.response.status === 401) {
                     setError("Invalid credentials");
-                } else if  (error.response.status === 400) {
-                    setError("Email already has an account");
+                } else if (error.response.status === 400) {
+                    setError("Username already exists");
                 } else {
-                    setError("Something went wrong. Please contact the Lovehandkrafted Team.");
+                    setError("Something went wrong. Please contact LHK Team.")
                 }
             } else if (error.request) {
-                setError("Network error. Please check your internet connection.");
+                setError("Network error. Please check your internet connnection");
             } else {
-                setError("Something went wrong. Please contact the Lovehandkrafted Team.")
+                setError("Something went wrong. Please try again.");
             }
         } finally {
             setLoading(false);
         }
 
         // try {
-        //     const res = await api.post(route, { username, password });
+        //!     const res = await api.post(route, { username, password });
 
         //     if (method === 'login') {
         //         localStorage.setItem(ACCESS_TOKEN, res.data.access);

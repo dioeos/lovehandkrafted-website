@@ -45,7 +45,28 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save()
         return user
 
+from django.core.exceptions import ValidationError
+from allauth.account.models import EmailAddress
+from django.contrib.auth import authenticate
  
-class CustomLoginSerializer(LoginSerializer):
-    username = None #remove username field from login
+from dj_rest_auth.serializers import LoginSerializer
 
+class CustomLoginSerializer(LoginSerializer):
+    username_field = "email"
+
+
+    def get_auth_user(self, request, email, password):  # Fix: Add `request` as first argument
+        """Authenticate user with email and password."""
+        user = authenticate(email=email, password=password)  # Fix: Change `user=email` to `email=email`
+        if not user:
+            raise ValidationError("Invalid credentials")
+        return user
+
+    def validate(self, attrs):
+        email = attrs.get(self.username_field)
+        password = attrs.get("password")
+
+        user = self.get_auth_user(self.context.get('request'), email, password)  # Fix: Pass request explicitly
+        if user and not EmailAddress.objects.filter(user=user, verified=True).exists():
+            raise ValidationError("Your email is not verified. Please check your email.")
+        return super().validate(attrs)

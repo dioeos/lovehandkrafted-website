@@ -1,8 +1,8 @@
 from django.urls import path, include, re_path
 from .. import views
+from .serializers import CustomLoginSerializer
 
-
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from dj_rest_auth.views import LoginView
 
 urlpatterns = [
     # path('user/register/', views.UserCreate.as_view(), name='user_create'),
@@ -13,12 +13,13 @@ urlpatterns = [
 
     #!api/authentication/dj-rest-auth/
     path("dj-rest-auth/", include("dj_rest_auth.urls")),
+
     re_path(
         r"^dj-rest-auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$",
         views.CustomConfirmEmailView.as_view(),
         name="account_confirm_email",
     ),
-    path("dj-rest-auth/logout", views.CustomLogoutView.as_view()),
+    path("dj-rest-auth/logout/", views.CustomLogoutView.as_view()),
     #path('dj-rest-auth/account-confirm-email/<str:key>/', views.CustomConfirmEmailView.as_view(), name='account_confirm_email'),
 
     path("dj-rest-auth/registration/", include("dj_rest_auth.registration.urls"))

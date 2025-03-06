@@ -235,7 +235,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-LOGIN_URL = "/admin"
+LOGIN_URL = "/login"
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587

@@ -10,6 +10,8 @@ services:
       - ./backend/.env
     depends_on:
       - postgres_db
+    volumes:
+      - ./backend:/app
 
   postgres_db:
     image: postgres

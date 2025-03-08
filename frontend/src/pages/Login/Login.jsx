@@ -26,7 +26,7 @@ const Login = ({ initialMethod }) => {
         setMethod(initialMethod);
     }, [initialMethod]);
 
-    const route = method === 'login' ?  '/authentication/dj-rest-auth/login/': '/authentication/dj-rest-auth/registration';
+    const route = method === 'login' ?  '/authentication/dj-rest-auth/login/': '/authentication/dj-rest-auth/registration/';
 
     return (
         <div>

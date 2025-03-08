@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-
+import re
 class CustomRegisterSerializer(RegisterSerializer):
     """Custom serializer for user registration."""
     username = None #remove username
@@ -44,10 +44,18 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save()
         return user
     
+    
     def validate_email(self, email):
-        email = email.strip() #no leading / trailing spaces
+        email = email.strip()  # Remove leading/trailing spaces
+
+        # Validate email format
+        email_regex = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
+        if not re.match(email_regex, email):
+            raise ValidationError({"email": ["Please enter a valid email address."]})
+
         if get_user_model().objects.filter(email=email).exists():
-            raise ValidationError("A user with this email already exists")
+            raise ValidationError({"email": ["An account with this email already exists"]})
+
         return email
             
 

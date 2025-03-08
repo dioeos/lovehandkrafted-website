@@ -1,22 +1,13 @@
 import { useState, useEffect, createContext, useContext } from "react";    
 import api from "../lib/api";
 
-import { LoginUtil } from "./LoginUtil";
-import { LogoutUtil } from "./LogoutUtil";
+//import { LoginUtil } from "./LoginUtil";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthorized, setIsAuthorized] = useState(false);
 
-    // const refreshToken = async () => {
-    //     try {
-    //         await api.post('/authentication/dj-rest-auth/token/refresh/');
-    //     } catch (error) {
-    //         console.error('Error refreshing token', error);
-    //         setIsAuthorized(false);
-    //     }
-    // };
     const handleRefreshToken = async () => {
         try {
             await api.post("/authentication/dj-rest-auth/token/refresh/");
@@ -30,32 +21,24 @@ export const AuthProvider = ({ children }) => {
             const response = await api.get("/authentication/dj-rest-auth/user");
 
             if (response && response.data.email) {
-
-                console.log(response.data.email)
-                console.log("user is authenticated")
                 setIsAuthorized(true)
                 
             } else {
-                console.log("User is not authenticated")
-                setIsAuthorized(false)
+                setIsAuthorized(false);
             }
         } catch (error) {
-            //invalid token or not logged in
-            console.log("Not logged in")
-            setIsAuthorized(false)
+            setIsAuthorized(false);
         }
 
     }
 
-    //! INSTEAD CHECK AUTH WITH REFRESH TOKENS
     useEffect(() => {
-        console.log("Checking auth on load")
         const initAuth = async () => {
             try {
                 await handleRefreshToken();
                 await checkAuth();
             } catch (error) {
-                console.error("Error during authentication process")
+                setIsAuthorized(false)
             }
         }
         initAuth();
@@ -64,27 +47,28 @@ export const AuthProvider = ({ children }) => {
 
     async function handleLogin(email, password) {
         try {
-            const response = await LoginUtil(email, password);
-            console.log(response)
+            const response = await api.post("/authentication/dj-rest-auth/login/", {email, password});
 
-            if (response) {
-                console.log("Checking auth")
+            if (response.status === 200) {
                 await checkAuth();
-            } else {
-                setIsAuthorized(false);
-            }
+                return; //successful login
+            } 
         } catch (error) {
-            console.error("Login failed")
             setIsAuthorized(false);
+            throw error; //let handleSubmit in loginform handle errors
         }
     }
 
     async function handleLogout() {
         try {
-            await LogoutUtil();
-            setIsAuthorized(false);
+            const response = await api.post("/authentication/dj-rest-auth/logout")
+
+            if (response.status === 200) {
+                setIsAuthorized(false)
+            } else {
+                setIsAuthorized(true)
+            }
         } catch (error) {
-            console.error("Logout failed")
             setIsAuthorized(true)
         }
     }

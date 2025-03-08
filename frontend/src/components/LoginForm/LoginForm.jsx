@@ -1,11 +1,9 @@
 import api from "../../utils/lib/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../token";
 import google from "../../assets/google.png";
 
 import { useAuth } from "../../utils/authentication/AuthProvider";
-import Login from "../../pages/Login/Login";
 
 const AuthForm = ({ route, method }) => {
     // login.jsx decides which route - login or register
@@ -17,7 +15,7 @@ const AuthForm = ({ route, method }) => {
     const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
 
-    const { handleLogin, handleLogout, isAuthorized } = useAuth();
+    const { handleLogin } = useAuth();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -25,79 +23,61 @@ const AuthForm = ({ route, method }) => {
         setError(null);
         setSuccess(null);
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError("Please enter a valid email address.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            //const response = await handleLogin(email, password)
-            //* route is either '/authentication/dj-rest-auth/login/ or '/authentication/dj-rest-auth/registration
-            //const res = await api.post(route, {email, password});
 
             if (method === 'login') {
-                const success = await handleLogin(email, password)
+                await handleLogin(email, password)
+                setSuccess("Login successful")
 
-                if (success) {
-
-                }
-                console.log("successfully logged in")
             } else {
-                const res = await api.post(route, {email, password});
-                setSuccess("Registration successful. Please login");
+                await api.post(route, {
+                    email: email.trim(),
+                    password1: password,
+                    password2: password,
+                    name: email.trim(),
+                });
+                setSuccess("Registration successful. Please check your email for verification");
                 setTimeout(() => {
                     navigate("/login");
                 }, 2000);
             }
 
         } catch (error) {
-            console.error(error);
 
             if (error.response) {
                 if (error.response.status === 401) {
-                    setError("Invalid credentials");
+                    const errorMessage = error.response.data.detail || error.response.data.message;
+
+                    if (errorMessage.includes("verified")) {
+                        setError("Your email is not verified. Please check your inbox.")
+                    } else {
+
+                        setError("Invalid credentials")
+                    }
+
                 } else if (error.response.status === 400) {
-                    setError("Username already exists");
+                    setError("Email already has an account")
                 } else {
-                    setError("Something went wrong. Please contact LHK Team.")
+                    setError("Something went wrong. Please try again")
                 }
             } else if (error.request) {
-                setError("Network error. Please check your internet connnection");
+                setError("Network error. Please check your internet connection.")
             } else {
-                setError("Something went wrong. Please try again.");
+                setError("Something went wrong. Please try again.")
             }
+
+            
         } finally {
             setLoading(false);
         }
 
-        // try {
-        //!     const res = await api.post(route, { username, password });
-
-        //     if (method === 'login') {
-        //         localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        //         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        //         console.log("successfully logged in!")
-        //         navigate("/");
-        //         window.location.reload();
-        //     } else {
-        //         setSuccess("Registration successful. Please login.");
-        //         setTimeout(() => {
-        //             navigate("/login");
-        //         }, 2000);
-        //     }
-        // } catch (error) {
-        //     console.error(error);
-        //     if (error.response) {
-        //         if (error.response.status === 401) {
-        //             setError("Invalid credentials");
-        //         } else if (error.response.status === 400) {
-        //             setError("Username already exists");
-        //         } else {
-        //             setError("Something went wrong. Please try again.");
-        //         }
-        //     } else if (error.request) {
-        //         setError("Network error. Please check your internet connection.");
-        //     } else {
-        //         setError("Something went wrong. Please try again.");
-        //     }
-        // } finally {
-        //     setLoading(false);
-        // }
     };
 
     // const handleGoogleLogin = () => {

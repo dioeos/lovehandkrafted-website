@@ -241,7 +241,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('GOOGLE_SMTP_APP_EMAIL')
 EMAIL_HOST_PASSWORD = config('GOOGLE_SMTP_APP_PASS')
+
+FRONTEND_URL = "http://localhost"
 ACCOUNT_EMAIL_CONFIRMATION_TEMPLATE = "templates/account/email_confirmation_message.txt"
+ACCOUNT_ADAPTER = "apps.authentication.adapters.CustomAccountAdapter"
 
 #? ADDED
 SPECTACULAR_SETTINGS = {

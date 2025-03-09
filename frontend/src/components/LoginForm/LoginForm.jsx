@@ -45,7 +45,7 @@ const AuthForm = ({ route, method }) => {
                 });
                 setSuccess("Registration successful. Please check your email for verification");
                 setTimeout(() => {
-                    navigate("/login");
+                    navigate("/account/login");
                 }, 2000);
             }
 
@@ -137,17 +137,27 @@ const AuthForm = ({ route, method }) => {
                     </button> */}
 
                     {method === 'login' && (
-                        <p className="text-sm text-gray-600 text-center">
-                            Don't have an account?{" "}
-                            <span className="text-blue-600 cursor-pointer" onClick={() => navigate("/register")}>
-                                Register
-                            </span>
-                        </p>
+                        <div>
+
+                            <p className="text-sm text-gray-600 text-center">
+                                Don't have an account?{" "}
+                                <span className="text-blue-600 cursor-pointer" onClick={() => navigate("/account/register")}>
+                                    Register
+                                </span>
+                            </p>
+
+
+                            <p className="text-sm text-gray-600 text-center">
+                                <span className="text-blue-600 cursor-pointer" onClick={() => navigate("/account/password/recover")}>
+                                    Forgot your password?
+                                </span>
+                            </p>
+                        </div>
                     )}
                     {method === 'register' && (
                         <p className="text-sm text-gray-600 text-center">
                             Already have an account?{" "}
-                            <span className="text-blue-600 cursor-pointer" onClick={() => navigate("/login")}>
+                            <span className="text-blue-600 cursor-pointer" onClick={() => navigate("/account/login")}>
                                 Login
                             </span>
                         </p>

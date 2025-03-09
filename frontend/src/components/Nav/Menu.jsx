@@ -44,8 +44,8 @@ const Menu = () => {
         },
 
         isAuthorized
-            ? { title: "Profile", href: "/profile"}
-            : { title: "Login", href: "/login"},
+            ? { title: "Profile", href: "/account/profile"}
+            : { title: "Login", href: "/account/login"},
     ]
 
     return (

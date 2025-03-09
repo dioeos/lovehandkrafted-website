@@ -3,9 +3,13 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer
-
-
+from django.core.exceptions import ValidationError
+from allauth.account.models import EmailAddress
+from django.contrib.auth import authenticate
+from rest_framework.exceptions import AuthenticationFailed
+from dj_rest_auth.serializers import LoginSerializer
 from django.contrib.auth import (get_user_model,)
+import re
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for user object"""
@@ -30,7 +34,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-import re
 class CustomRegisterSerializer(RegisterSerializer):
     """Custom serializer for user registration."""
     username = None #remove username
@@ -58,15 +61,6 @@ class CustomRegisterSerializer(RegisterSerializer):
 
         return email
             
-
-
-
-from django.core.exceptions import ValidationError
-from allauth.account.models import EmailAddress
-from django.contrib.auth import authenticate
-from rest_framework.exceptions import AuthenticationFailed
- 
-from dj_rest_auth.serializers import LoginSerializer
 
 class CustomLoginSerializer(LoginSerializer):
     username_field = "email"

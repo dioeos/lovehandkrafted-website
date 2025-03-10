@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["backend", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+    # ---- DEFAULT ----
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,17 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'drf_spectacular',
-
-    #my apps
+    # ---- Django REST Framework ----
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
-    'apps.authentication',
-
     'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
 
 
-    #allauth
+    'drf_spectacular', #? for swagger documentation
+
+    # ---- Django AllAuth ----
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -60,6 +59,11 @@ INSTALLED_APPS = [
     #"allauth.mfa",
     # "allauth.headless",
     # "allauth.usersessions",
+
+
+    # ---- Application Apps ----
+    'apps.authentication',
+
 
 ]
 
@@ -162,6 +166,10 @@ REST_AUTH = {
     "JWT_AUTH_HTTPONLY": True, 
 }
 
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER': 'apps.authentication.api.serializers.CustomPasswordResetSerializer'
+}
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -221,30 +229,11 @@ AUTHENTICATION_BACKENDS = ([
 
 
 
-#! custom user model to plug into Django's authentication system
-AUTH_USER_MODEL = "authentication.User"
 
-ACCOUNT_LOGIN_METHODS = {'email'}
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-LOGIN_URL = "/login"
 
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config('GOOGLE_SMTP_APP_EMAIL')
-EMAIL_HOST_PASSWORD = config('GOOGLE_SMTP_APP_PASS')
 
-FRONTEND_URL = "http://localhost"
-ACCOUNT_EMAIL_CONFIRMATION_TEMPLATE = "templates/account/email_confirmation_message.txt"
-ACCOUNT_ADAPTER = "apps.authentication.adapters.CustomAccountAdapter"
+
 
 #? ADDED
 SPECTACULAR_SETTINGS = {
@@ -253,3 +242,39 @@ SPECTACULAR_SETTINGS = {
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     ]
 }
+
+
+# ---- SMTP Configuration ----
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('GOOGLE_SMTP_APP_EMAIL')
+EMAIL_HOST_PASSWORD = config('GOOGLE_SMTP_APP_PASS')
+
+# ---- Django Configuration ----
+AUTH_USER_MODEL = "authentication.User" #? custom user model
+LOGIN_URL = "/login" #? login URL for Django's authentication system
+
+# ---- dj-rest-auth Configuration ----
+FRONTEND_URL = "http://localhost"
+FRONTEND_RESET_PASSWORD_URL = "https://localhost/account/reset-password"
+#PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = "http://localhost/account/reset-password/confirm"
+
+# ---- Django AllAuth Configuration ----
+EMAIL_CONFIRM_REDIRECT_BASE_URL = \
+    "http://localhost/email/confirm/"
+
+
+PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = \
+    "http://localhost/account/password-reset/confirm/"
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_METHODS = ['email'] #? user logs in with email instead of username
+ACCOUNT_USERNAME_REQUIRED = False #? disables username field
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None #? removes username field from user model
+ACCOUNT_UNIQUE_EMAIL = True #? no duplicate emails
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True #? confirms an email address when confirmation link is clicked
+ACCOUNT_EMAIL_CONFIRMATION_TEMPLATE = "templates/account/email_confirmation_message.txt" #? custom email template
+ACCOUNT_ADAPTER = "apps.authentication.adapters.CustomAccountAdapter" #? custom adapter logic

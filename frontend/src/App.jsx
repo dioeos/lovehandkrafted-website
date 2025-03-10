@@ -13,8 +13,10 @@ import Shop from "./pages/Shop/Shop";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 
-import PasswordChange from "./pages/PasswordChange/PasswordChange";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
+import PasswordConfirm from "./pages/PasswordConfirm/PasswordConfirm";
+
+
 import EmailConfirm from "./pages/EmailConfirm/EmailConfirm";
 
 function App() {
@@ -33,13 +35,14 @@ function App() {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/profile" element={<Profile />} />
 
-                    {/* auth routes */}
+                    {/* general auth routes */}
                     <Route path="/account/login" element={<Login initialMethod="login" />} />
                     <Route path="/account/register" element={<Login initialMethod="register" />} />
                     <Route path="/account/password/recover" element={<PasswordReset />} />
-                    <Route path="/account/password/reset" element={<PasswordChange />} />
 
-                    <Route path="/account/confirm-email/:token" element={<EmailConfirm />} />
+                    {/* redirect from email auth routes */}
+                    <Route path="/account/password-reset/confirm/:uid/:token" element={<PasswordConfirm/>} />
+                    <Route path="/account/confirm-email/:uid/:token" element={<EmailConfirm />} />
 
 
 

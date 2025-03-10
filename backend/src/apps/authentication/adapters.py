@@ -5,4 +5,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
     def get_email_confirmation_url(self, request, emailconfirmation):
         frontend_url = settings.FRONTEND_URL
-        return f"{frontend_url}/account/confirm-email/{emailconfirmation.key}"
+        uid = emailconfirmation.email_address.user.pk
+        token = emailconfirmation.key
+        return f"{frontend_url}/account/confirm-email/{uid}/{token}"
+    

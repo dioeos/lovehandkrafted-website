@@ -81,7 +81,7 @@ class CustomLoginSerializerTests(APITestCase):
         self.assertIn("Your email is not verified.", response.data.get("detail", []))
 
 
-class CustomRegisterSerializer(APITestCase):
+class CustomRegisterSerializerTests(APITestCase):
     def setUp(self):
         self.register_url = "/api/authentication/dj-rest-auth/registration/"
 
@@ -191,3 +191,38 @@ class CustomRegisterSerializer(APITestCase):
         user_exists = get_user_model().objects.filter(email="spaces@example.com").first()
         self.assertTrue(user_exists)
 
+
+class ResetPasswordTests(APITestCase):
+
+    def setUp(self):
+        self.reset_password_url = "/api/authentication/dj-rest-auth/password/reset"
+
+
+    def test_valid_reset_password_request(self):
+        """Test reset password with valid email"""
+        response = self.client.post(self.reset_password_url, {
+            "email": "example@example.com"
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_invalid_email_input_reset_password_request(self):
+        """Test reset password with invalid email input"""
+        response = self.client.post(self.reset_password_url, {
+            "email": "invalidemailformat"
+        })
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_invalid_email_reset_password_request(self):
+        """Test reset password request with invalid email"""
+        user = "thisissomefakeemail@example.com"
+        response = self.client.post(self.reset_password_url, {
+            "email": user
+        })
+        #dj-rest-auth's reset password endpoint sends 200 if email does not exist or does
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+
+
+
+# class ChangePasswordTests(APITestCase):

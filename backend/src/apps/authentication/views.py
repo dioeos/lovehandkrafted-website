@@ -1,26 +1,13 @@
-# import json
-
-# from django.contrib.auth import authenticate, login, logout
-# from django.http import JsonResponse
-# from django.middleware.csrf import get_token
-# from django.views.decorators.http import require_POST
-# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-# from rest_framework.permissions import IsAuthenticated
-# from rest_framework.views import APIView
-
-# from rest_framework.response import Response
-# from rest_framework import status
-# from src.apps.authentication.api.serializers import serializers
-
-
-#!
 from django.contrib.auth.models import User
 from rest_framework import generics
 from src.apps.authentication.api.serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import get_user_model
-from dj_rest_auth.views import LogoutView
+from dj_rest_auth.views import LogoutView, PasswordResetView
 from allauth.account.views import ConfirmEmailView 
+
+from django.conf import settings
+from django.http import HttpResponseRedirect
 
 DOMAIN = 'http://localhost'
 
@@ -57,3 +44,11 @@ class CustomLogoutView(LogoutView):
         response.delete_cookie("jwt-access-token")
 
         return response
+    
+def password_reset_confirm_redirect(request, uidb64, token):
+    return HttpResponseRedirect(
+        f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
+    )
+
+
+    

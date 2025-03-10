@@ -83,3 +83,4 @@ class CustomLoginSerializer(LoginSerializer):
             #drf translates into 401 response
             raise AuthenticationFailed("Your email is not verified.")
         return super().validate(attrs)
+    

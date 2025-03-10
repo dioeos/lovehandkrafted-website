@@ -278,3 +278,5 @@ ACCOUNT_UNIQUE_EMAIL = True #? no duplicate emails
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True #? confirms an email address when confirmation link is clicked
 ACCOUNT_EMAIL_CONFIRMATION_TEMPLATE = "templates/account/email_confirmation_message.txt" #? custom email template
 ACCOUNT_ADAPTER = "apps.authentication.adapters.CustomAccountAdapter" #? custom adapter logic
+
+EMAIL_SUBJECT_PREFIX = "[Lovehandkrafted] "

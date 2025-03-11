@@ -1,10 +1,7 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
-
 from django.utils.encoding import force_str
 from django.contrib.sites.shortcuts import get_current_site
-
-
 from allauth.account.adapter import DefaultAccountAdapter
 
 class CustomAccountAdapter(DefaultAccountAdapter):
@@ -24,7 +21,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         if prefix is None:
             site = get_current_site(self.request)
             prefix = "[{name}]".format(name=site.name)
-        print(f"==========Formating email with {prefix}========")
+        #print(f"==========Formating email with {prefix}========")
         return prefix + force_str(subject).title()
 
 
@@ -36,6 +33,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         return f"{frontend_url}/account/confirm-email/{uid}/{token}"
     
     def render_mail(self, template_prefix, email, context, headers=None):
-        print(f"===========Rendering email with template: {template_prefix} =========")
+        #print(f"===========Rendering email with template: {template_prefix} =========")
         return super().render_mail(template_prefix, email, context, headers)
     

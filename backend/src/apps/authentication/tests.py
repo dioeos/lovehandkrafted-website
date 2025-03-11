@@ -225,4 +225,3 @@ class ResetPasswordTests(APITestCase):
 
 
 
-# class ChangePasswordTests(APITestCase):

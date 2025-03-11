@@ -12,7 +12,6 @@ const PasswordConfirm = () => {
     const [success, setSuccess] = useState(null);
 
     useEffect(() => {
-        console.log("Extracted UID:", uid, "Token:", token);
     }, [uid, token]);
 
     const handleSubmit = async (e) => {
@@ -46,7 +45,7 @@ const PasswordConfirm = () => {
                 if (errorData.token) {
                     setError("Invalid or expired password reset link.")
                 } else if (errorData.uid) {
-                    setError("Invalid or expored password reset link.")
+                    setError("Invalid or expired password reset link.")
                 } else if (errorData.new_password1 || errorData.new_password2) {
                     const passwordErrors = errorData.new_password || errorData.new_password2;
 
@@ -62,11 +61,9 @@ const PasswordConfirm = () => {
                         setError("Invalid password. Please try a stronger one.");
                     }
                 } else {
-                    console.log("none of the cases")
                     setError("Error resetting password. Please try again.")
                 }
             } else {
-                console.log("Skipped if")
                 setError("Error resetting password. Please try again.")
             }
         } finally {

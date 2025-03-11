@@ -14,7 +14,7 @@ from pathlib import Path
 from decouple import config
 from datetime import datetime, timedelta
 
-from rest_framework.permissions import IsAuthenticated
+#from rest_framework.permissions import IsAuthenticated
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,8 +47,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
-
-
     'drf_spectacular', #? for swagger documentation
 
     # ---- Django AllAuth ----
@@ -258,8 +256,6 @@ LOGIN_URL = "/login" #? login URL for Django's authentication system
 
 # ---- dj-rest-auth Configuration ----
 FRONTEND_URL = "http://localhost"
-FRONTEND_RESET_PASSWORD_URL = "https://localhost/account/reset-password"
-#PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = "http://localhost/account/reset-password/confirm"
 
 # ---- Django AllAuth Configuration ----
 EMAIL_CONFIRM_REDIRECT_BASE_URL = \

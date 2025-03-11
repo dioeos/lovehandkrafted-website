@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const Footer = () => {
     return (
         <div id="footer" className="flex items-start flex-wrap uppercase mt-[20px] font-[12px]">
-            <li className="list-none w-1/4 mt-[5px] overflow-hidden">
+            <ul className="list-none w-1/4 mt-[5px] overflow-hidden">
                 <motion.li
                     custom={[0.3, 0]} 
                     variants={translate}
@@ -14,9 +14,9 @@ const Footer = () => {
                 >
                     <span className="text-[#9f9689]">Made by: </span>Lovehandkrafted
                 </motion.li>
-            </li>
+            </ul>
 
-            <li className="list-none w-1/4 mt-[5px] overflow-hidden">
+            <ul className="list-none w-1/4 mt-[5px] overflow-hidden">
                 <motion.li
                     custom={[0.3, 0]} 
                     variants={translate}
@@ -26,10 +26,10 @@ const Footer = () => {
                 >
                     <span className="text-[#9f9689]">Made by: </span>Ryan Dioneda
                 </motion.li>
-            </li>
+            </ul>
 
             
-            <li className="list-none w-1/4 mt-[5px] overflow-hidden">
+            <ul className="list-none w-1/4 mt-[5px] overflow-hidden">
                 <motion.li
                     custom={[0.3, 0]} 
                     variants={translate}
@@ -39,9 +39,9 @@ const Footer = () => {
                 >
                     <span className="text-[#9f9689]">Made by: </span>Ryan Dioneda
                 </motion.li>
-            </li>
+            </ul>
 
-            <li className="list-none w-1/4 mt-[5px] overflow-hidden">
+            <ul className="list-none w-1/4 mt-[5px] overflow-hidden">
                 <motion.li
                     custom={[0.3, 0]} 
                     variants={translate}
@@ -61,7 +61,7 @@ const Footer = () => {
                 >
                     <span className="text-[#9f9689]">Made by: </span>Ryan Dioneda
                 </motion.li> */}
-            </li>
+            </ul>
 
         </div>
     )

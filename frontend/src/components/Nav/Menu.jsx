@@ -5,48 +5,48 @@ import Body from "./Body";
 
 import Footer from "./Footer";
 
-const links = [
-    {
-        title: "Home",
-        href: "/",
-        src: "home.png"
-    }, 
-
-    {
-        title: "Shop",
-        href: "/",
-        src: "home.png"
-    }, 
-
-    {
-        title: "About",
-        href: "/",
-        src: "home.png"
-    }, 
-
-    {
-        title: "Contact",
-        href: "/",
-        src: "home.png"
-    }, 
-
-    {
-        title: "Login",
-        href: "/",
-        src: "home.png"
-    }, 
-
-    {
-        title: "FAQ",
-        href: "/",
-        src: "home.png"
-    }, 
-
-]
+import { useAuth } from "../../utils/authentication/AuthProvider";
 
 const Menu = () => {
 
     const [selectedLink, setSelectedLink] = useState({isActive: false, index: 0});
+    const { isAuthorized } = useAuth();
+
+    const links = [
+        {
+            title: "Home",
+            href: "/",
+            src: "home.png"
+        }, 
+
+        {
+            title: "Shop",
+            href: "/shop",
+            src: "home.png"
+        }, 
+
+        {
+            title: "About",
+            href: "/about",
+            src: "home.png"
+        }, 
+
+        {
+            title: "Contact",
+            href: "/",
+            src: "home.png"
+        }, 
+
+        {
+            title: "FAQ",
+            href: "/faq",
+            src: "home.png"
+        },
+
+        isAuthorized
+            ? { title: "Profile", href: "/account/profile"}
+            : { title: "Login", href: "/account/login"},
+    ]
 
     return (
         <div className="">

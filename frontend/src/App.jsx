@@ -1,75 +1,58 @@
 import React from "react";
-import LoginForm from "./components/LoginForm/LoginForm";
-import AuthenticatedView from "./components/AuthenticatedView/AuthenticatedView";
-import { getCSRF, getSession, whoami, login, logout } from "./utils/authentication/auth";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Nav from "./components/Nav/Nav";
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            csrf: "",
-            username: "",
-            password: "",
-            error: "",
-            isAuthenticated: false,
-        };
-    }
+import { AuthProvider } from "./utils/authentication/AuthProvider"; // global authentication context
 
-    componentDidMount = async () => {
-        const sessionData = await getSession();
-        if (sessionData.isAuthenticated) {
-            this.setState({ isAuthenticated: true });
-        } else {
-            this.setState({ isAuthenticated: false });
-            const csrfToken = await getCSRF();
-            this.setState({ csrf: csrfToken });
-        }
-    };
+// Pages
+import Index from "./pages/Index/Index";
+import About from "./pages/About/About";
+import Contact from "./pages/Contact/Contact";
+import Faq from "./pages/Faq/Faq";
+import Shop from "./pages/Shop/Shop";
+import Login from "./pages/Login/Login";
+import Profile from "./pages/Profile/Profile";
 
-    handleLogin = async (username, password) => {
-        try {
-            await login(username, password, this.state.csrf);
-            this.setState({ isAuthenticated: true, username: "", password: "", error: "" });
-        } catch (error) {
-            this.setState({ error: "Wrong username or password." });
-        }
-    };
+import PasswordReset from "./pages/PasswordReset/PasswordReset";
+import PasswordConfirm from "./pages/PasswordConfirm/PasswordConfirm";
 
-    handleLogout = async () => {
-        try {
-            await logout();
-            const csrfToken = await getCSRF();
-            this.setState({ isAuthenticated: false, csrf: csrfToken });
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
-    render() {
-        return (
+import EmailConfirm from "./pages/EmailConfirm/EmailConfirm";
 
-            <div className="">
-              <Nav />
-              {/* <div>
-                <h1>React Cookie Auth</h1>
-                {!this.state.isAuthenticated ? (
-                    <LoginForm
-                        username={this.state.username}
-                        password={this.state.password}
-                        error={this.state.error}
-                        onLogin={this.handleLogin}
-                        onUsernameChange={(e) => this.setState({ username: e.target.value })}
-                        onPasswordChange={(e) => this.setState({ password: e.target.value })}
-                    />
-                ) : (
-                    <AuthenticatedView whoami={whoami} logout={this.handleLogout} />
-                )}
- 
-              </div> */}
-            </div>
-        );
-    }
+function App() {
+
+    return (
+        <AuthProvider>
+            <Router>
+                <Nav />
+                <Routes>
+
+                    {/* common route */}
+                    <Route path="/" element={<Index />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/shop" element={<Shop />} />
+                    <Route path="/faq" element={<Faq />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/profile" element={<Profile />} />
+
+                    {/* general auth routes */}
+                    <Route path="/account/login" element={<Login initialMethod="login" />} />
+                    <Route path="/account/register" element={<Login initialMethod="register" />} />
+                    <Route path="/account/password/recover" element={<PasswordReset />} />
+
+                    {/* redirect from email auth routes */}
+                    <Route path="/account/password-reset/confirm/:uid/:token" element={<PasswordConfirm/>} />
+                    <Route path="/account/confirm-email/:uid/:token" element={<EmailConfirm />} />
+
+
+
+                    {/* if route dne */}
+                    <Route path="/*" element={<Navigate to="/" />} />
+                </Routes>
+            </Router>
+
+        </AuthProvider>
+    )
 }
 
 export default App;

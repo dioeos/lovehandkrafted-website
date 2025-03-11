@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   lhk_django_backend:
     build:
@@ -12,6 +10,8 @@ services:
       - ./backend/.env
     depends_on:
       - postgres_db
+    volumes:
+      - ./backend:/app
 
   postgres_db:
     image: postgres
@@ -29,6 +29,9 @@ services:
     environment:
       - VITE_HOST=0.0.0.0
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - lhk_django_backend
 

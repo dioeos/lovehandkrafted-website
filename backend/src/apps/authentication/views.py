@@ -1,59 +1,54 @@
-import json
+from django.contrib.auth.models import User
+from rest_framework import generics
+from src.apps.authentication.api.serializers import UserSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.contrib.auth import get_user_model
+from dj_rest_auth.views import LogoutView, PasswordResetView
+from allauth.account.views import ConfirmEmailView 
 
-from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
-from django.middleware.csrf import get_token
-from django.views.decorators.http import require_POST
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
+from django.conf import settings
+from django.http import HttpResponseRedirect
 
+DOMAIN = 'http://localhost'
 
-def get_csrf(request):
-    response = JsonResponse({'detail': 'CSRF cookie set'})
-    response['X-CSRFToken'] = get_token(request)
-    return response
+User = get_user_model()
 
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
-@require_POST
-def login_view(request):
-    data = json.loads(request.body)
-    username = data.get('username')
-    password = data.get('password')
-
-    if username is None or password is None:
-        return JsonResponse({'detail': 'Please provide username and password.'}, status=400)
-
-    user = authenticate(username=username, password=password)
-
-    if user is None:
-        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
-
-    login(request, user)
-    return JsonResponse({'detail': 'Successfully logged in.'})
-
-
-def logout_view(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({'detail': 'You\'re not logged in.'}, status=400)
-
-    logout(request)
-    return JsonResponse({'detail': 'Successfully logged out.'})
-
-
-class SessionView(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+class UserDetailView(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
-    @staticmethod
-    def get(request, format=None):
-        return JsonResponse({'isAuthenticated': True})
+    def get_object(self):
+        return self.request.user
+    
+
+class CustomConfirmEmailView(ConfirmEmailView):
+    template_name = "account/email_confirmation_signup_message.html"
+
+    def get_template_names(self):
+        return [self.template_name]
 
 
-class WhoAmIView(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+class CustomLogoutView(LogoutView):
+    
+    def logout(self, request):
+        response = super().logout(request)
 
-    @staticmethod
-    def get(request, format=None):
-        return JsonResponse({'username': request.user.username})
+        #delete cookies
+        response.delete_cookie("jwt-refresh-token")
+        response.delete_cookie("jwt-access-token")
+
+        return response
+    
+def password_reset_confirm_redirect(request, uidb64, token):
+    return HttpResponseRedirect(
+        f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
+    )
+
+
+    

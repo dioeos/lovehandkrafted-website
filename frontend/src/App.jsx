@@ -16,7 +16,7 @@ import Profile from "./pages/Profile/Profile";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
 import PasswordConfirm from "./pages/PasswordConfirm/PasswordConfirm";
 
-
+import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
 import EmailConfirm from "./pages/EmailConfirm/EmailConfirm";
 
 function App() {
@@ -41,6 +41,7 @@ function App() {
                     <Route path="/account/password/recover" element={<PasswordReset />} />
 
                     {/* redirect from email auth routes */}
+                    <Route path="/account/verify-email/:email" element={<VerifyEmail/>} />
                     <Route path="/account/password-reset/confirm/:uid/:token" element={<PasswordConfirm/>} />
                     <Route path="/account/confirm-email/:uid/:token" element={<EmailConfirm />} />
 

@@ -38,9 +38,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False) #access to django admin site
     is_verified = models.BooleanField(default=False)
-    is_vendor = models.BooleanField(default=True)
+    is_vendor = models.BooleanField(default=False)
     
     objects = UserManager()
 
     # use email field as unique username identifier
     USERNAME_FIELD = "email"
+
+    class Meta:
+        permissions = [
+            #custom perm "access_vendor_dashboard"
+            ("access_vendor_dashboard", "Can access vendor dashboard"),
+            ("add_product", "Can add products to the site"),
+            ("send_newsletter", "Can send newsletters to suscribers"),
+        ]
+

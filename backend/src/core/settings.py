@@ -142,6 +142,7 @@ REST_FRAMEWORK = {
     ],
     
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        #if jwt access token is present -> authenticated
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
 

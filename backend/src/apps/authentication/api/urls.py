@@ -8,7 +8,7 @@ urlpatterns = [
 
     # ---- Registration Routes ----
     path("dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),
-    re_path(r"^dj-rest-auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$", views.CustomConfirmEmailView.as_view(), name="account_confirm_email"),
+    #re_path(r"^dj-rest-auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$", views.CustomConfirmEmailView.as_view(), name="account_confirm_email"),
 
     # ---- Logout Routes ----
     path("dj-rest-auth/logout/", views.CustomLogoutView.as_view()),

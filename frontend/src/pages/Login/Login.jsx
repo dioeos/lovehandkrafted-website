@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/authentication/AuthProvider";
 
 import AuthForm from "../../components/LoginForm/LoginForm";
+import Layout from "../../components/Layout/Layout";
 
 
 
@@ -29,9 +30,11 @@ const Login = ({ initialMethod }) => {
     const route = method === 'login' ?  '/authentication/dj-rest-auth/login/': '/authentication/dj-rest-auth/registration/';
 
     return (
-        <div>
-            <AuthForm route={route} method={method} />
-        </div>
+        <Layout>
+            <div>
+                <AuthForm route={route} method={method} />
+            </div>
+        </Layout>
     )
 }
 export default Login;

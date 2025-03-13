@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Nav from "./components/Nav/Nav";
 
 import { AuthProvider } from "./utils/authentication/AuthProvider"; // global authentication context
 
@@ -29,7 +28,6 @@ function App() {
     return (
         <AuthProvider>
             <Router>
-                <Nav />
                 <Routes>
 
                     {/* common route */}

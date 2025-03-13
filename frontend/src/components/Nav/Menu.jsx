@@ -33,7 +33,7 @@ const Menu = () => {
 
         {
             title: "Contact",
-            href: "/",
+            href: "/contact",
             src: "home.png"
         }, 
 

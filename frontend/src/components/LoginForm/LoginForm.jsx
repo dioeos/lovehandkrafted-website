@@ -43,10 +43,10 @@ const AuthForm = ({ route, method }) => {
                     password2: password,
                     name: email.trim(),
                 });
-                setSuccess("Registration successful. Please check your email for verification");
+                //setSuccess("Registration successful. Please check your email for verification");
                 setTimeout(() => {
-                    navigate("/account/login");
-                }, 2000);
+                    navigate(`/account/verify-email/${encodeURIComponent(email)}`);
+                });
             }
 
         } catch (error) {

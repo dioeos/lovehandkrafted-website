@@ -14,7 +14,7 @@ const Login = ({ initialMethod }) => {
 
     useEffect(() => {
         if (isAuthorized) {
-            navigate("/profile");
+            navigate("/account/profile");
         }
     }, [isAuthorized, navigate])
 

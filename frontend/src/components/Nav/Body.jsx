@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const Body = ({links, selectedLink, setSelectedLink}) => {
 
     const getChars = (word) => {
+        if (!word) return [];
         let chars = [];
         word.split("").forEach( (char, i) => {
           chars.push(
@@ -27,7 +28,7 @@ const Body = ({links, selectedLink, setSelectedLink}) => {
         <div className='flex flex-wrap mt-[40px] max-w-full md:max-w-[1200px] uppercase text-[#0B1215]'>
             {
                 links.map( (link, index) => {
-                    const { title, href } = link;
+                    const { title, href } = link || {};
                     return (
 
                     <Link key={`l_${index}`} to={href} className='' style={{textDecoration: "none", color: "#0B1215"}}>

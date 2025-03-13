@@ -10,11 +10,10 @@ const Profile = () => {
 
     useEffect(() => {
         if (!isAuthorized) {
-            navigate("/login");
+            navigate("/account/login");
         }
     }, [isAuthorized, navigate]);
 
-    if (!isAuthorized) { return null;}
 
     return (
         <div id="index-root" className="h-screen bg-red-500 flex justify-center items-center">

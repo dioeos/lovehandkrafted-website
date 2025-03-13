@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from allauth.account.models import EmailAddress
 
 class UserManager(BaseUserManager):
     """Custom manager to handle authentication system. Uses email rather than username for unique identifier"""
@@ -27,6 +28,9 @@ class UserManager(BaseUserManager):
         user.is_verified = True
         user.is_vendor = True
         user.save(using=self._db)
+        EmailAddress.objects.update_or_create(
+            user=user, email=user.email, defaults={"verified": True, "primary": True}
+        )
         return user
     
 class User(AbstractBaseUser, PermissionsMixin):

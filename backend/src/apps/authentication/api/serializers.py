@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ["email", "password", "name"]
+        fields = ["email", "password", "name", "is_vendor"]
         extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
 
     def create(self, validated_data):
@@ -82,5 +82,8 @@ class CustomLoginSerializer(LoginSerializer):
         if user and not EmailAddress.objects.filter(user=user, verified=True).exists():
             #drf translates into 401 response
             raise AuthenticationFailed("Your email is not verified.")
-        return super().validate(attrs)
+        
+        data = super().validate(attrs)
+        data["is_vendor"] = user.is_vendor
+        return data
     

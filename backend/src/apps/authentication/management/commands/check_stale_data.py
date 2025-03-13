@@ -16,15 +16,15 @@ class Command(BaseCommand):
         ])
 
         if stale_cts.exists():
-            self.stdout.write("Stale Content Types Found:")
+            self.stdout.write(self.style.ERROR("Stale Content Types Found:"))
             for ct in stale_cts:
                 self.stdout.write(f"- {ct.app_label} | {ct.model}")
         
         stale_permissions = Permission.objects.filter(content_type__in=stale_cts)
         if stale_permissions.exists():
-            self.stdout.write("Stale Permissions Found:")
+            self.stdout.write(self.style.ERROR("Stale Permissions Found:"))
             for perm in stale_permissions:
                 self.stdout.write(f"- {perm.codename} | {perm.content_type}")
 
         if not stale_cts.exists() and not stale_permissions.exists():
-            self.stdout.write("No stale content types or permissions found")
+            self.stdout.write(self.style.SUCCESS("No stale content types or permissions found"))

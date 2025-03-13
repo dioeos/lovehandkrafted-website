@@ -26,9 +26,9 @@ class Command(BaseCommand):
             try:
                 perm = Permission.objects.get(codename=perm_codename)
                 vendor_group.permissions.add(perm)
-                self.stdout.write(f"Successfully assigned `{perm_codename}` to Vendor group")
+                self.stdout.write(self.style.SUCCESS(f"Successfully assigned `{perm_codename}` to Vendor group"))
             except Permission.DoesNotExist:
-                self.stdout.write(f"Failed to assign `{perm_codename}`: Permission does not exist")
+                self.stdout.write(self.style.ERROR(f"Failed to assign `{perm_codename}`: Permission does not exist"))
 
 
 

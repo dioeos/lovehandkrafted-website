@@ -1,6 +1,7 @@
 import {  useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../utils/lib/api";
+import Layout from "../../components/Layout/Layout";
 
 const PasswordConfirm = () => {
     const { uid, token } = useParams();
@@ -72,55 +73,57 @@ const PasswordConfirm = () => {
     };
 
     return (
-        <div className="h-screen flex items-center justify-center">
-            <div className="bg-white p-8 shadow-lg rounded-lg w-96">
-                <h2 className="text-2xl font-semibold text-center mb-4">
-                    Reset account password
-                </h2>
+        <Layout>
+            <div className="h-screen flex items-center justify-center">
+                <div className="bg-white p-8 shadow-lg rounded-lg w-96">
+                    <h2 className="text-2xl font-semibold text-center mb-4">
+                        Reset account password
+                    </h2>
 
-                <p className="font-light text-center mb-4">
-                    Enter a new password
-                </p>
+                    <p className="font-light text-center mb-4">
+                        Enter a new password
+                    </p>
 
-                {error && <div className="text-red-600 text-sm text-center mb-2">{error}</div>}
-                {success && <div className="text-green-600 text-sm text-center mb-2">{success}</div>}
+                    {error && <div className="text-red-600 text-sm text-center mb-2">{error}</div>}
+                    {success && <div className="text-green-600 text-sm text-center mb-2">{success}</div>}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label htmlFor="password1" className="block text-gray-700 font-medium">Password:</label>
-                        <input
-                            type="password" 
-                            id="password1"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label htmlFor="password1" className="block text-gray-700 font-medium">Password:</label>
+                            <input
+                                type="password" 
+                                id="password1"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            >
+                            </input>
+
+
+                            <label htmlFor="password2" className="block text-gray-700 font-medium">Confirm password:</label>
+                            <input
+                                type="password" 
+                                id="password2"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                                className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            >
+                            </input>
+                        </div>
+
+                        <button
+                            type="submit" 
+                            className="w-full flex items-center justify-center border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition"
                         >
-                        </input>
+                            {loading ? "Processing..." : "Submit"}
+                        </button>
 
-
-                        <label htmlFor="password2" className="block text-gray-700 font-medium">Confirm password:</label>
-                        <input
-                            type="password" 
-                            id="password2"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                            className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        >
-                        </input>
-                    </div>
-
-                    <button
-                        type="submit" 
-                        className="w-full flex items-center justify-center border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition"
-                    >
-                        {loading ? "Processing..." : "Submit"}
-                    </button>
-
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        </Layout>
     );
 };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utils/lib/api";
+import Layout from "../../components/Layout/Layout";
 
 const EmailConfirm = () => {
     const { uid, token } = useParams();
@@ -26,9 +27,11 @@ const EmailConfirm = () => {
     }, [token, navigate]);
 
     return (
-        <div className="email-confirm-container">
-            <h2>{message || "Verifying your email..."}</h2>
-        </div>
+        <Layout>
+            <div className="email-confirm-container">
+                <h2>{message || "Verifying your email..."}</h2>
+            </div>
+        </Layout>
     );
 };
 

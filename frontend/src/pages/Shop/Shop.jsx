@@ -1,10 +1,13 @@
+import Layout from "../../components/Layout/Layout";
 
 const Shop = () => {
     console.log("Shop")
     return (
-        <div id="shop-root" className="h-screen bg-pink-500">
+        <Layout>
+            <div id="shop-root" className="h-screen bg-pink-500">
 
-        </div>
+            </div>
+        </Layout>
 
     )
 

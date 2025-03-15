@@ -22,7 +22,9 @@ class UserManager(BaseUserManager):
         return user
     
     def create_superuser(self, email, password):
-        user = self.create_user(email, password)
+        user = self.create_user(email=email, password=password)
+        user.first_name = "LHK ADMIN"
+        user.last_name = ""
         user.is_staff = True
         user.is_superuser = True
         user.is_verified = True
@@ -38,7 +40,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     #email field must be unique as it is the unique identgifier
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255, default="")
+    last_name = models.CharField(max_length=255, default="")
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False) #access to django admin site
     is_verified = models.BooleanField(default=False)

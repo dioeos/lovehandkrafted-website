@@ -10,7 +10,7 @@ import { useAuth } from "../../utils/authentication/AuthProvider";
 const Menu = () => {
 
     const [selectedLink, setSelectedLink] = useState({isActive: false, index: 0});
-    const { isAuthorized } = useAuth();
+    const { isAuthorized, isVendor } = useAuth();
 
     const links = [
         {
@@ -33,7 +33,7 @@ const Menu = () => {
 
         {
             title: "Contact",
-            href: "/",
+            href: "/contact",
             src: "home.png"
         }, 
 
@@ -46,6 +46,10 @@ const Menu = () => {
         isAuthorized
             ? { title: "Profile", href: "/account/profile"}
             : { title: "Login", href: "/account/login"},
+
+        isVendor
+            ? { title: "Dashboard", href: "/vendor-dashboard"}
+            : null
     ]
 
     return (

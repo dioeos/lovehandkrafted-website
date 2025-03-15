@@ -1,12 +1,14 @@
+import Layout from "../../components/Layout/Layout";
 
 
 const Faq = () => {
     console.log("Faq")
     return (
-        <div id="faq-root" className="h-screen bg-red-500">
+        <Layout>
+            <div id="faq-root" className="h-screen bg-red-500">
 
-        </div>
-
+            </div>
+        </Layout>
     )
 
 }

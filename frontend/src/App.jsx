@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Nav from "./components/Nav/Nav";
 
 import { AuthProvider } from "./utils/authentication/AuthProvider"; // global authentication context
 
@@ -16,15 +15,24 @@ import Profile from "./pages/Profile/Profile";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
 import PasswordConfirm from "./pages/PasswordConfirm/PasswordConfirm";
 
-
+import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
 import EmailConfirm from "./pages/EmailConfirm/EmailConfirm";
+
+import ProtectedRoute from "./utils/authentication/ProtectedRoute";
+import Unauthorized from "./pages/Unauthorized/Unauthorized";
+
+import VendorLayout from "./pages/VendorDashboard/VendorLayout";
+import VendorDashboard from "./pages/VendorDashboard/VendorDashboard";
+import VendorOrders from "./pages/VendorDashboard/VendorOrders";
+import VendorNewsletter from "./pages/VendorDashboard/VendorNewsletter";
+import VendorAccounts from "./pages/VendorDashboard/VendorAccounts";
+import VendorFinances from "./pages/VendorDashboard/VendorFinances";
 
 function App() {
 
     return (
         <AuthProvider>
             <Router>
-                <Nav />
                 <Routes>
 
                     {/* common route */}
@@ -33,7 +41,6 @@ function App() {
                     <Route path="/shop" element={<Shop />} />
                     <Route path="/faq" element={<Faq />} />
                     <Route path="/contact" element={<Contact />} />
-                    <Route path="/profile" element={<Profile />} />
 
                     {/* general auth routes */}
                     <Route path="/account/login" element={<Login initialMethod="login" />} />
@@ -41,13 +48,30 @@ function App() {
                     <Route path="/account/password/recover" element={<PasswordReset />} />
 
                     {/* redirect from email auth routes */}
+                    <Route path="/account/verify-email/:email" element={<VerifyEmail/>} />
                     <Route path="/account/password-reset/confirm/:uid/:token" element={<PasswordConfirm/>} />
                     <Route path="/account/confirm-email/:uid/:token" element={<EmailConfirm />} />
+
+                    {/* protected vendor routes */}
+                    <Route element={<ProtectedRoute vendorOnly={true}/>}>
+                        <Route path="/vendor-dashboard" element={<VendorLayout/>}>
+                            <Route index element={<VendorDashboard/>}/>
+                            <Route path="/vendor-dashboard/orders" element={<VendorOrders/>}/>
+                            <Route path="/vendor-dashboard/newsletter" element={<VendorNewsletter/>}/>
+                            <Route path="/vendor-dashboard/accounts" element={<VendorAccounts/>}/>
+                            <Route path="/vendor-dashboard/finances" element={<VendorFinances/>}/>
+                        </Route>
+                    </Route>
+
+                    {/* auth protected routes */}
+                    <Route element={<ProtectedRoute vendorOnly={false}/>}>
+                        <Route path="/account/profile" element={<Profile/>}/>
+                    </Route>
 
 
 
                     {/* if route dne */}
-                    <Route path="/*" element={<Navigate to="/" />} />
+                    <Route path="/*" element={<Unauthorized/>}/>
                 </Routes>
             </Router>
 

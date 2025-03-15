@@ -10,6 +10,8 @@ const AuthForm = ({ route, method }) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
@@ -41,19 +43,22 @@ const AuthForm = ({ route, method }) => {
                     email: email.trim(),
                     password1: password,
                     password2: password,
-                    name: email.trim(),
+                    first_name: firstName,
+                    last_name: lastName,
                 });
-                setSuccess("Registration successful. Please check your email for verification");
+                //setSuccess("Registration successful. Please check your email for verification");
                 setTimeout(() => {
-                    navigate("/account/login");
-                }, 2000);
+                    navigate(`/account/verify-email/${encodeURIComponent(email)}`);
+                });
             }
 
         } catch (error) {
 
             if (error.response) {
+                console.log(error.response)
                 if (error.response.status === 401) {
                     const errorMessage = error.response.data.detail || error.response.data.message;
+                    console.log(error.response)
 
                     if (errorMessage.includes("verified")) {
                         setError("Your email is not verified. Please check your inbox.")
@@ -106,6 +111,37 @@ const AuthForm = ({ route, method }) => {
                             className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
                     </div>
+
+                    {method === 'register' && (
+
+                        <div>
+                            <label htmlFor="firstName" className="block text-gray-700 font-medium">First Name:</label>
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                value={firstName} 
+                                onChange={(e) => setFirstName(e.target.value)} 
+                                required 
+                                className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            />
+                        </div>
+                    )}
+
+
+                    {method === 'register' && (
+
+                        <div>
+                            <label htmlFor="lastName" className="block text-gray-700 font-medium">Last Name:</label>
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                value={lastName} 
+                                onChange={(e) => setLastName(e.target.value)} 
+                                required 
+                                className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            />
+                        </div>
+                    )}
 
                     <div>
                         <label htmlFor="password" className="block text-gray-700 font-medium">Password:</label>

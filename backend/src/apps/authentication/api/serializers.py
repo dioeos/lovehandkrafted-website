@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ["email", "password", "name"]
+        fields = ["email", "password", "first_name", "last_name", "is_vendor"]
         extra_kwargs = {"password": {"write_only": True, "min_length": 5}}
 
     def create(self, validated_data):
@@ -38,12 +38,14 @@ class CustomRegisterSerializer(RegisterSerializer):
     """Custom serializer for user registration."""
     username = None #remove username
     email = serializers.EmailField(required=True)
-    name = serializers.CharField(max_length=255)
+    first_name = serializers.CharField(max_length=255, required=True)
+    last_name = serializers.CharField(max_length=255, required=True)
 
     @transaction.atomic
     def save(self, request):
         user = super().save(request)
-        user.name = self.data.get("name")
+        user.first_name = self.data.get("first_name", "")
+        user.last_name = self.data.get("last_name", "")
         user.save()
         return user
     
@@ -82,5 +84,8 @@ class CustomLoginSerializer(LoginSerializer):
         if user and not EmailAddress.objects.filter(user=user, verified=True).exists():
             #drf translates into 401 response
             raise AuthenticationFailed("Your email is not verified.")
-        return super().validate(attrs)
+        
+        data = super().validate(attrs)
+        data["is_vendor"] = user.is_vendor
+        return data
     

@@ -21,7 +21,12 @@ import EmailConfirm from "./pages/EmailConfirm/EmailConfirm";
 import ProtectedRoute from "./utils/authentication/ProtectedRoute";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
 
+import VendorLayout from "./pages/VendorDashboard/VendorLayout";
 import VendorDashboard from "./pages/VendorDashboard/VendorDashboard";
+import VendorOrders from "./pages/VendorDashboard/VendorOrders";
+import VendorNewsletter from "./pages/VendorDashboard/VendorNewsletter";
+import VendorAccounts from "./pages/VendorDashboard/VendorAccounts";
+import VendorFinances from "./pages/VendorDashboard/VendorFinances";
 
 function App() {
 
@@ -47,11 +52,18 @@ function App() {
                     <Route path="/account/password-reset/confirm/:uid/:token" element={<PasswordConfirm/>} />
                     <Route path="/account/confirm-email/:uid/:token" element={<EmailConfirm />} />
 
-                    {/* protected routes */}
+                    {/* protected vendor routes */}
                     <Route element={<ProtectedRoute vendorOnly={true}/>}>
-                        <Route path="/vendor-dashboard" element={<VendorDashboard/>}/>
+                        <Route path="/vendor-dashboard" element={<VendorLayout/>}>
+                            <Route index element={<VendorDashboard/>}/>
+                            <Route path="/vendor-dashboard/orders" element={<VendorOrders/>}/>
+                            <Route path="/vendor-dashboard/newsletter" element={<VendorNewsletter/>}/>
+                            <Route path="/vendor-dashboard/accounts" element={<VendorAccounts/>}/>
+                            <Route path="/vendor-dashboard/finances" element={<VendorFinances/>}/>
+                        </Route>
                     </Route>
 
+                    {/* auth protected routes */}
                     <Route element={<ProtectedRoute vendorOnly={false}/>}>
                         <Route path="/account/profile" element={<Profile/>}/>
                     </Route>

@@ -9,6 +9,8 @@ export const AuthProvider = ({ children }) => {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [isVendor, setIsVendor] = useState(false);
     const [isLoading, setIsLoading] = useState(true); //to prevent flickering & decisions before authentication data loaded
+    const [userFirstName, setUserFirstName] = useState("");
+    const [userEmail, setUserEmail] = useState("");
 
     const handleRefreshToken = async () => {
         try {
@@ -23,9 +25,12 @@ export const AuthProvider = ({ children }) => {
         try {
             setIsLoading(true)
             const response = await api.get("/authentication/dj-rest-auth/user");
+            console.log(response.data);
 
             if (response && response.data.email) {
                 setIsAuthorized(true)
+                setUserEmail(response.data.email)
+                setUserFirstName(response.data.first_name)
 
                 if (response.data.is_vendor === true) {
                     setIsVendor(true);
@@ -98,7 +103,7 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ isAuthorized, handleLogin, handleLogout, isVendor, isLoading }}>
+        <AuthContext.Provider value={{ isAuthorized, handleLogin, handleLogout, isVendor, isLoading, userFirstName, userEmail }}>
             {children}
         </AuthContext.Provider>
     )

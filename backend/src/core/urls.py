@@ -30,4 +30,6 @@ urlpatterns = [
     path(f"{API_PREFIX}/docs/", SpectacularSwaggerView.as_view(url_name="api-schema"), name="api-docs"),
 
     path(f"{API_PREFIX}/authentication/", include("src.apps.authentication.api.urls")),
+
+    path(f"{API_PREFIX}/newsletter/", include("apps.newsletter.api.urls"))
 ]

@@ -41,7 +41,8 @@ def send_newsletter_view(request):
     #extract frontend request data
     subject = request.data.get("subject")
     content = request.data.get("content")
-    
+    print(f"Subject: {subject}, Content: {content}")
+
     subscribers = Subscriber.objects.all()
 
     if not subscribers:
@@ -53,12 +54,14 @@ def send_newsletter_view(request):
             "content": content,
         }
 
+
         try:
 
             html_content = render_to_string(
                 "emails/newsletter_email.html",
-                context
+                {"subject": subject, "content": content}
             )
+            print(html_content)
 
             #create multipart email instance
             msg = EmailMultiAlternatives(
@@ -70,6 +73,8 @@ def send_newsletter_view(request):
 
             #attach HTML content to email instance
             msg.attach_alternative(html_content, "text/html")
+            msg.content_subtype = "html" 
+            print(msg.message())
             msg.send()
         except Exception as e:
             print("ERROR WITH TEMPLATE:", e)

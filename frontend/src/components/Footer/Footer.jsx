@@ -3,18 +3,45 @@ import { useNavigate } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
+import api from "../../utils/lib/api";
 
 const Footer = () => {
     const [email, setEmail] = useState("")
     const navigate = useNavigate();
 
+    const handlesubmit = async (event) => {
+        event.preventDefault();
+
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            // setError("Please enter a valid email address.");
+            // setLoading(false);
+            return;
+        }
+
+        try {
+            const response = await api.post("/newsletter/subscribe/", {
+                email: email.trim()
+            });
+            console.log(response);
+
+            if (response.status === 200) {
+                console.log("successfully subscribed")
+            }
+        } catch (error) {
+            console.log(error)
+            console.log("error")
+        }
+    }
+
     return (
         <div className="bg-[#E2D8C9] py-8 px-30 flex flex-col items-center justify-center w-full">
 
-            <div className="flex px-30 pb-5 gap-50 border-b-2 border-[#0B1215] border-opacity-60 w-full">
+            <div className="flex px-30 pl-20 pb-5 gap-50 border-b-2 border-[#0B1215] border-opacity-60 w-full">
                 <div className="flex flex-col w-1/2">
                     <span className="uppercase text-[#0B1215] font-semibold">Suscribe to newsletter</span>
-                    <form className="relative flex items-center h-12">
+                    <form onSubmit={handlesubmit} className="relative flex items-center h-12">
                         <input
                             type="text"
                             id="email"

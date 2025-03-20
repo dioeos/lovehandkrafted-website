@@ -4,7 +4,10 @@ from src.apps.authentication.api.serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import get_user_model
 from dj_rest_auth.views import LogoutView
-
+from rest_framework.views import APIView
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.response import Response
 from django.conf import settings
 from django.http import HttpResponseRedirect
 
@@ -38,11 +41,32 @@ class CustomLogoutView(LogoutView):
         response.delete_cookie("jwt-access-token")
 
         return response
-    
+
+class CookieTokenRefreshView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"])
+        
+        if not refresh_token:
+            raise AuthenticationFailed("No refresh token found in cookies")
+
+        try:
+            refresh = RefreshToken(refresh_token)
+            access_token = str(refresh.access_token)
+        except Exception as e:
+            raise AuthenticationFailed("Invalid refresh token")
+
+        # Return the new access token (without setting a new refresh token)
+        return Response({"access": access_token})
+
+
 def password_reset_confirm_redirect(request, uidb64, token):
     return HttpResponseRedirect(
         f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
     )
+
+
 
 
 # class UserOrderListView(generics.ListAPIView):

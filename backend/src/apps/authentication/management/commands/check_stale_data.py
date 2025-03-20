@@ -12,7 +12,8 @@ class Command(BaseCommand):
         # Include core Django apps, third-party, & custom apps
         stale_cts = ContentType.objects.exclude(app_label__in=[
             'admin', 'auth', 'contenttypes', 'sessions', 'authtoken',
-            'account', 'socialaccount', 'token_blacklist', 'authentication'
+            'account', 'socialaccount', 'token_blacklist', 'authentication',
+            'newsletter',
         ])
 
         if stale_cts.exists():

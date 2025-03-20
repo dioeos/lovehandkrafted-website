@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     # ---- Application Apps ----
     'apps.authentication',
     'apps.newsletter',
+    'apps.products',
 
 ]
 

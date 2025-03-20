@@ -1,5 +1,6 @@
 """
-List all content types in Django application to keep track of all models in project
+List all content types in Django application to keep track of all models in project (appears if it has at least one model
+and migrations have been applied)
 """
 
 from django.core.management.base import BaseCommand

@@ -19,22 +19,23 @@ class Command(BaseCommand):
             self.stdout.write("Created new Vendor group")
 
         permissions_to_add = [
-            "access_vendor_dashboard",
             "add_product",
-            "send_newsletter",
+            "change_product",
+            "delete_product",
         ]
+
+        all_groups = Group.objects.exclude(name="Vendor")
 
         for perm_codename in permissions_to_add:
             try:
+                product_content_type = ContentType.objects.get_for_model(Product)
+                perm = Permission.objects.get(codename=perm_codename, content_type=product_content_type)
 
-                if perm_codename == "add_product":
-                    # Ensure we fetch it from the products app
-                    product_content_type = ContentType.objects.get_for_model(Product)
-                    perm = Permission.objects.get(codename=perm_codename, content_type=product_content_type)
-                    self.stdout.write(self.style.SUCCESS(f"Successfully assigned `{perm_codename}` to Vendor group"))
-                else:
-                    perm = Permission.objects.get(codename=perm_codename)
-                    self.stdout.write(self.style.SUCCESS(f"Successfully assigned `{perm_codename}` to Vendor group"))
+                for group in all_groups:
+                    group.permissions.remove(perm)
+
+                vendor_group.permissions.add(perm)
+                self.stdout.write(self.style.SUCCESS(f"Successfully assigned `{perm_codename}` to Vendor group"))
             except Permission.DoesNotExist:
                 self.stdout.write(self.style.ERROR(f"Failed to assign `{perm_codename}`: Permission does not exist"))
 

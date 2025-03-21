@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 
-class Product(models.model):
+class Product(models.Model):
     """Represents an individual product item"""
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200)
@@ -14,7 +14,7 @@ class Product(models.model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        order = ("-created_at",)
+        ordering = ("-created_at",)
 
     def __str__(self):
         return self.name

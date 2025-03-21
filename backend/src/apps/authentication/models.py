@@ -56,7 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         permissions = [
             #custom perm "access_vendor_dashboard"
             ("access_vendor_dashboard", "Can access vendor dashboard"),
-            ("add_product", "Can add products to the site"),
+            # ("add_product", "Can add products to the site"),
             ("send_newsletter", "Can send newsletters to suscribers"),
         ]
 

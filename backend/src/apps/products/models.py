@@ -20,3 +20,12 @@ class Product(models.Model):
         return self.name
     
 
+class ProductTag(models.Model):
+    """Represents tags that can be assigned to products"""
+    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100, unique=True)
+    products = models.ManyToManyField(Product, related_name="tags")
+
+    def __str__(self):
+        return self.name
+

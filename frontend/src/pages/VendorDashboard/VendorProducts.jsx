@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Topbar from "../../components/Topbar/Topbar";
 import api from "../../utils/lib/api";
 
+import { FaPlus } from "react-icons/fa"
+
 const VendorProducts = () => {
 
     const [products, setProducts] = useState([]);
@@ -12,7 +14,7 @@ const VendorProducts = () => {
         const fetchProducts = async () => {
             try {
                 //get request for products
-                const response = await api.get('/products');
+                const response = await api.get('/products/');
                 console.log(response);
                 setProducts(response.data);
             } catch (error) {
@@ -24,7 +26,7 @@ const VendorProducts = () => {
 
     return (
 
-        <div className="rounded-lg shadow h-full overflow-y-auto">
+        <div className="rounded-lg shadow h-full overflow-y-auto relative">
             <Topbar />
 
             <div className="bg-amber-400">
@@ -70,6 +72,12 @@ const VendorProducts = () => {
                     </div>
                 ))}
             </div>
+
+            <a href="/vendor-dashboard/products/add" className="absolute text-xl bottom-4 right-4 cursor-pointer">
+                <FaPlus className="text-black" />
+            </a>
+
+
         </div>
     )
 }

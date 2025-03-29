@@ -28,6 +28,7 @@ import VendorNewsletter from "./pages/VendorDashboard/VendorNewsletter";
 import VendorAccounts from "./pages/VendorDashboard/VendorAccounts";
 import VendorFinances from "./pages/VendorDashboard/VendorFinances";
 import VendorProducts from "./pages/VendorDashboard/VendorProducts";
+import VendorAddProducts from "./pages/VendorDashboard/VendorAddProducts";
 
 function App() {
 
@@ -62,6 +63,7 @@ function App() {
                             <Route path="/vendor-dashboard/accounts" element={<VendorAccounts/>}/>
                             <Route path="/vendor-dashboard/finances" element={<VendorFinances/>}/>
                             <Route path="/vendor-dashboard/products" element={<VendorProducts/>}/>
+                            <Route path="/vendor-dashboard/products/add" element={<VendorAddProducts/>}/>
                         </Route>
                     </Route>
 

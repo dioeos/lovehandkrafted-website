@@ -6,6 +6,6 @@ class Command(BaseCommand):
         Product.objects.all().delete()
 
         if Product.objects.all().count() == 0:
-            self.stdout.write(self.style.SUCCESS("Successfully deleted all users."))
+            self.stdout.write(self.style.SUCCESS("Successfully deleted all products."))
         else:
             self.stdout.write(self.style.ERROR("Failed to delete all products."))

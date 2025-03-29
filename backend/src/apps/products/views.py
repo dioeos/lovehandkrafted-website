@@ -11,6 +11,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsA]
 
     def perform_create(self, serializer):
+        print("Performing create in ViewSet")
         return super().perform_create(serializer)
     
     def perform_update(self, serializer):

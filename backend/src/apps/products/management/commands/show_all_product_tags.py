@@ -12,7 +12,7 @@ class Command(BaseCommand):
                     "name": tag.name,
                     "products": tag.products
                 }
-                self.stdout.write(self.style.SUCCESS(f"{tag_data}"))
+                self.stdout.write(self.style.SUCCESS(f"{tag_data}\n"))
 
         else:
             self.stdout.write(self.style.ERROR("Failed to find any product tags."))

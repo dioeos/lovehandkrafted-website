@@ -5,6 +5,7 @@ import { FaLuggageCart } from "react-icons/fa";
 import { MdSupervisorAccount } from "react-icons/md";
 import { ImNewspaper } from "react-icons/im";
 import { MdAttachMoney } from "react-icons/md";
+import { FaBoxOpen } from "react-icons/fa";
 
 const RouteSelect = () => {
   return (
@@ -14,6 +15,8 @@ const RouteSelect = () => {
       <Route Icon={FaLuggageCart} path="/vendor-dashboard/orders" title="Orders" />
       <Route Icon={MdSupervisorAccount} path="/vendor-dashboard/accounts" title="Accounts" />
       <Route Icon={MdAttachMoney} path="/vendor-dashboard/finances" title="Finance" />
+      <Route Icon={FaBoxOpen} path="/vendor-dashboard/products" title="Products" />
+
     </div>
   );
 };

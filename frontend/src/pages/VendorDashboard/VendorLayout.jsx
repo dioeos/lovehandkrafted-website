@@ -21,7 +21,7 @@ const VendorLayout = () => {
     return (
         <div id="vendor-dashboard-root" className="grid gap-4 p-4 grid-cols-[200px_1fr] bg-stone-100 h-screen">
             <VendorSidebar vendorData={vendorData}/>
-            <div className="h-full">
+            <div className="h-full overflow-y-auto">
                 <Outlet context={vendorData}/> 
             </div>
         </div>

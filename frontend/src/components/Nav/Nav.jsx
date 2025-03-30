@@ -38,7 +38,7 @@ const Nav = () => {
     };
 
     return (
-        <div id="header" className="bg-[#f4f0ea] fixed w-full box-border p-2 text-[#0B1215]">
+        <div id="header" className="bg-[#f4f0ea] absolute top-0 left-0 w-full box-border p-2 text-[#0B1215] z-50">
             <div id="bar" className="flex relative justify-center uppercase text-xs ">
                 <a href="/" style={{color: "#0B1215", textDecoration: "none"}} className="absolute left-0 mt-1 text-xs md:text-lg">Lovehandkrafted</a>
 

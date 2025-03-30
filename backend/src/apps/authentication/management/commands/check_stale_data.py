@@ -13,7 +13,7 @@ class Command(BaseCommand):
         stale_cts = ContentType.objects.exclude(app_label__in=[
             'admin', 'auth', 'contenttypes', 'sessions', 'authtoken',
             'account', 'socialaccount', 'token_blacklist', 'authentication',
-            'newsletter',
+            'newsletter', 'products'
         ])
 
         if stale_cts.exists():

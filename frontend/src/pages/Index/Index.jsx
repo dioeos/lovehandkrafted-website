@@ -3,6 +3,58 @@ import Layout from '../../components/Layout/Layout';
 import { FaArrowRight } from "react-icons/fa";
 import { motion, useScroll, useTransform, hover } from 'framer-motion';
 
+const banner = {
+    animate: {
+        transition: {
+            delayChildren: 0.4,
+            staggerChildren: 0.1,
+        },
+    },
+};
+
+const letterAnimation = {
+    initial: { y: 400},
+    animate: {
+        y: 0,
+        transition: {
+            ease: [0.6, 0.01, -0.05, 0.95],
+            duration: 1,
+        },
+    },
+};
+
+
+const AnimatedLetters = ({ title }) => {
+    return (
+        <motion.span
+            className="relative inline-block overflow-hidden" 
+            variants={banner}
+            initial='initial'
+            animate='animate'
+        >
+            {[...title].map((letter) => (
+                <motion.span
+                    className="relative inline-block" 
+                    variants={letterAnimation}
+                >
+                    {letter}
+                </motion.span>
+            ))}
+        </motion.span>
+    )
+}
+
+const MainTitle = ({ title }) => {
+    return (
+        <div className="flex items-center">
+            <div className="">
+                <AnimatedLetters title={title} />
+            </div>
+
+        </div>
+    )
+}
+
 const Index = () => {
 
     const heroContainer = useRef(null);
@@ -26,7 +78,7 @@ const Index = () => {
 
                         <div className="relative">
                             <motion.div style={{ y, initial: "0px" }} className='m-0 mt-[20px] text-[5vw] leading-[5vw] uppercase'>
-                                LOVEHANDKRAFTED
+                                <MainTitle title={"LOVEHANDKRAFTED"}/>
                             </motion.div>
                         </div>
 

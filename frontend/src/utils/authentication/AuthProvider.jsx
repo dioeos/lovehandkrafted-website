@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [isVendor, setIsVendor] = useState(false);
     const [isLoading, setIsLoading] = useState(true); //to prevent flickering & decisions before authentication data loaded
     const [userFirstName, setUserFirstName] = useState("");
+    const [userLastName, setUserLastName] = useState("");
     const [userEmail, setUserEmail] = useState("");
 
     const handleRefreshToken = async () => {
@@ -31,6 +32,7 @@ export const AuthProvider = ({ children }) => {
                 setIsAuthorized(true)
                 setUserEmail(response.data.email)
                 setUserFirstName(response.data.first_name)
+                setUserLastName(response.data.last_name)
 
                 if (response.data.is_vendor === true) {
                     setIsVendor(true);
@@ -103,7 +105,7 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ isAuthorized, handleLogin, handleLogout, isVendor, isLoading, userFirstName, userEmail }}>
+        <AuthContext.Provider value={{ isAuthorized, handleLogin, handleLogout, isVendor, isLoading, userFirstName, userLastName, userEmail }}>
             {children}
         </AuthContext.Provider>
     )

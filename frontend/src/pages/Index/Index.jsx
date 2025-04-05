@@ -8,18 +8,18 @@ import Footer from '../../components/Footer/Footer';
 //index sections
 import { HeroSection } from './HeroSection';
 import { IntroSection } from './IntroSection';
-
-
+import { FeaturedSection } from './FeaturedSection';
 
 const Index = () => {
 
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen bg-[#FAF9F6]">
             <Nav/>
             <div id="index-root" className="flex-grow">
                 <HeroSection/>
                 <IntroSection/>
+                <FeaturedSection/>
             </div>
             <Footer/>
         </div>

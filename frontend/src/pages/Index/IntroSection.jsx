@@ -12,10 +12,10 @@ export const IntroSection = () => {
     const y = useTransform(scrollYProgress, [0,1], [0, -350])
     const y2 = useTransform(scrollYProgress, [0,1], [0, -300])
     return (
-        <section id="intro-section" className="">
+        <section id="intro-section" className="h-[50vh]">
             <div ref={introContainer} className="p-4 grid grid-rows-[auto_auto_auto] md:grid-cols-[1fr_2fr]">
                     
-                <motion.div id="image-container" className="hidden md:flex justify-center items-center" style={{ y, initial: "0px"}}>
+                <motion.div id="image-container" className="bg-gray-500 hidden md:flex justify-center items-center" style={{ y, initial: "0px"}}>
                     <img src="/your-image.jpg" alt="Handcrafted Gifts" className="w-full max-w-xs md:max-w-sm" />
                 </motion.div>
 
@@ -42,7 +42,7 @@ export const IntroSection = () => {
                                 >
                                     <motion.div 
                                         whileHover={{ scale: 1.1 }}    
-                                        className="h-[60px] w-[60px] md:h-[120px] md:w-[120px] rounded-full bg-[#352f36] text-[#fffff0] flex justify-center items-center"
+                                        className="h-[80px] w-[80px] md:h-[120px] md:w-[120px] rounded-full bg-[#352f36] text-[#fffff0] flex justify-center items-center"
                                     >
                                         <button className="flex justify-center items-center p-2 uppercase satoshi">
                                             <span className="uppercase text-[.7rem] md:text-[1rem]">About Us</span>

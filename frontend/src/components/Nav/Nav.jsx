@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { opacity } from "./anim";
+import { useLocation } from "react-router-dom";
 
 import Menu from "./Menu";
 
@@ -17,6 +18,8 @@ const path02Variants = {
 
 
 const Nav = () => {
+    const location = useLocation();
+    const showAnimation = location.pathname === "/";
     const [isActive, setIsActive] = useState(false);
 
     const path01Controls = useAnimation();
@@ -38,7 +41,17 @@ const Nav = () => {
     };
 
     return (
-        <div id="header" className="bg-[#f4f0ea] absolute top-0 left-0 w-full box-border p-2 text-[#0B1215] z-50">
+        <motion.div 
+            id="header" 
+            className="bg-[#f4f0ea] absolute top-0 left-0 w-full box-border p-2 text-[#0B1215] z-50"
+            initial={showAnimation ? { opacity: 0, y: -50 } : false}
+            animate={showAnimation ? { opacity: 1, y: 0} : false}
+            transition={{
+                ease: "easeInOut",
+                duration: 1,
+                delay: 1.8
+            }}
+        >
             <div id="bar" className="flex relative justify-center uppercase text-xs ">
                 <a href="/" style={{color: "#0B1215", textDecoration: "none"}} className="absolute left-0 mt-1 text-xs md:text-lg">Lovehandkrafted</a>
 
@@ -95,7 +108,7 @@ const Nav = () => {
                     )}
                 </AnimatePresence>
 
-        </div>
+        </motion.div>
     )
 }
 

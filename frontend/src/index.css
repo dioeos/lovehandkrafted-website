@@ -14,3 +14,30 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.josefin-slab {
+  font-family: "Josefin Slab", serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Change to 300, 700 as needed */
+  font-style: normal;
+}
+.manrope {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi-Regular';
+  src: url('../public/fonts/Satoshi-Regular.woff2') format('woff2'),
+       url('../public/fonts/Satoshi-Regular.woff') format('woff'),
+       url('../public/fonts/Satoshi-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+.satoshi {
+  font-family: 'Satoshi-Regular';
+}

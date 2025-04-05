@@ -1,118 +1,28 @@
 import { useRef, useEffect } from 'react';
-import Layout from '../../components/Layout/Layout';
-import { FaArrowRight } from "react-icons/fa";
 import { motion, useScroll, useTransform, hover } from 'framer-motion';
 
-const banner = {
-    animate: {
-        transition: {
-            delayChildren: 0.4,
-            staggerChildren: 0.1,
-        },
-    },
-};
+//general components
+import Nav from '../../components/Nav/Nav';
+import Footer from '../../components/Footer/Footer';
 
-const letterAnimation = {
-    initial: { y: 400},
-    animate: {
-        y: 0,
-        transition: {
-            ease: [0.6, 0.01, -0.05, 0.95],
-            duration: 1,
-        },
-    },
-};
+//index sections
+import { HeroSection } from './HeroSection';
+import { IntroSection } from './IntroSection';
 
 
-const AnimatedLetters = ({ title }) => {
-    return (
-        <motion.span
-            className="relative inline-block overflow-hidden" 
-            variants={banner}
-            initial='initial'
-            animate='animate'
-        >
-            {[...title].map((letter) => (
-                <motion.span
-                    className="relative inline-block" 
-                    variants={letterAnimation}
-                >
-                    {letter}
-                </motion.span>
-            ))}
-        </motion.span>
-    )
-}
-
-const MainTitle = ({ title }) => {
-    return (
-        <div className="flex items-center">
-            <div className="">
-                <AnimatedLetters title={title} />
-            </div>
-
-        </div>
-    )
-}
 
 const Index = () => {
 
-    const heroContainer = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: heroContainer,
-        offset: ['start end', 'end start']
-    });
-
-    const y = useTransform(scrollYProgress, [0,1], [0, -200])
-    const y2 = useTransform(scrollYProgress, [0,1], [0, -170])
-    const y3 = useTransform(scrollYProgress, [0,1], [0, -170])
-
-    const phrase = "We create with a Heart.";
-
 
     return (
-        <Layout>
-            <div id="index-root" className="mt-[20vh] h-screen grid">
-                <section className=''>
-                    <div ref={heroContainer} id='body' className='ml-[2vw] mt-[20vh] place-self-start'>
-
-                        <div className="relative">
-                            <motion.div style={{ y, initial: "0px" }} className='m-0 mt-[20px] text-[5vw] leading-[5vw] uppercase'>
-                                <MainTitle title={"LOVEHANDKRAFTED"}/>
-                            </motion.div>
-                        </div>
-
-                        <div>
-                            <p className='text-black m-0 mt-[10px] text-[2.5vw] uppercase relative'>
-                                <motion.div style={{ y: y2, initial: "0px" }}>
-                                    {phrase}
-                                </motion.div>
-                            </p>
-
-
-                        </div>
-
-                        <motion.div style={{y: y2, initial: "0px"}} className='p-2 border-2 rounded-4xl inline-block bg-red-500'>
-                            <motion.div
-                                className='cursor-pointer flex justify-center items-center gap-2'
-                                whileHover={{scale: 1.1}}
-                                transition={{duration: 0.5, type: "tween", ease: [0.76, 0, 0.24, 1]}}
-                            
-                            >
-                                Explore <FaArrowRight/>
-
-                            </motion.div>
-                        </motion.div>
-
-
-                    </div>
-                </section>
-
-                <section className='bg-green-500 p-2'>
-
-                </section>
+        <div className="flex flex-col min-h-screen">
+            <Nav/>
+            <div id="index-root" className="flex-grow">
+                <HeroSection/>
+                <IntroSection/>
             </div>
-        </Layout>
+            <Footer/>
+        </div>
     )
 }
 

@@ -51,7 +51,7 @@ export const HeroSection = () => {
                     style={{y: y2, initial: "0px"}} 
                     className='inline-block cursor-pointer'
                 >
-                    <ExploreButton />
+                    <ExploreButton buttonText="Explore" />
                 </motion.div>
 
 

@@ -25,13 +25,13 @@ const Shop = () => {
 
                 <div id="shop-container" className="mt-[4em] mx-[2vw] p-4">
                     <div id="shop-header">
-                        <h1 className="uppercase !text-[6rem] text-[#352f36]">ALL</h1>
+                        <h1 className="uppercase !text-[4rem] md:!text-[6rem] text-[#352f36] satoshi">ALL</h1>
                     </div>
 
                     <div id="filter-system-container">
                     </div>
 
-                    <div id="shop-grid" className="grid md:grid-cols-[1fr_1fr_1fr_1fr]">
+                    <div id="shop-grid" className="grid grid-cols-2 md:grid-cols-4">
 
                         <Card productName="Item 1"/>
                         <Card productName="Item 2"/>

@@ -105,7 +105,7 @@ const Footer = () => {
                                         <FaTwitter className="text-[1.2rem] md:text-[2rem] text-[#FAF9F6] opacity-60 hover:opacity-100" />
                                     </a>
 
-                                    <a href="#" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://www.facebook.com/Lovehandcrafted/" target="_blank" rel="noopener noreferrer">
                                         <FaInstagram className="text-[1.2rem] md:text-[2rem] text-[#FAF9F6] opacity-60 hover:opacity-100" />
                                     </a>
                                 </div>

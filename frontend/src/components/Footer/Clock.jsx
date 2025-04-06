@@ -35,7 +35,7 @@ const PhilippinesClock = () => {
   });
 
   return (
-    <div className="text-lg font-mono text-white">
+    <div className="satoshi text-white text-[.7rem] md:text-[1rem]">
       <div>{formattedDay}</div>
       <div>{formattedTime}</div>
     </div>

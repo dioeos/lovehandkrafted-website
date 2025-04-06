@@ -19,14 +19,14 @@ export const IntroSection = () => {
                     <img src="/your-image.jpg" alt="Handcrafted Gifts" className="w-full max-w-xs md:max-w-sm" />
                 </motion.div>
 
-                <div id="text-container" className="flex flex-col gap-4 p-4">
+                <div id="text-container" className="flex flex-col gap-4 md:p-4">
                     
                     <motion.div id="intro-text-container" 
                         className="satoshi text-[1.5rem] md:text-[2rem] uppercase leading-[1.3]" 
                         style={{ y, initial: "0px"}}
                     >
                         Welcome to the Lovehandkrafted Shop, where we believe gifts should be made by 
-                        <span className="ml-6 mr-4 satoshi-italic">hand</span> and with <span className="ml-4 satoshi-italic">heart</span>.
+                        <span className="ml-4 mr-2 satoshi-italic">hand</span> and with <span className="ml-2 satoshi-italic">heart</span>.
                     </motion.div>
 
                     <div id="sub-text-container" className="manrope flex flex-col text-[.9rem]">

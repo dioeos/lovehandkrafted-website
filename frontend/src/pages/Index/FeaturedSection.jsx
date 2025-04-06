@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from 'react'
 import { Card } from "../../components/Card/Card";
-import { Carousel } from "./Carousel";
+import { Extras } from "./Extras";
 
 export const FeaturedSection = () => {
 
@@ -26,7 +26,7 @@ export const FeaturedSection = () => {
 
 
             <div id="carousel-wrapper" className="overflow-x-hidden overflow-y-hidden bg-[#352f36] -mt-[1px]">
-                <Carousel />
+                <Extras showSlider={true}/>
             </div>
 
 

@@ -1,37 +1,68 @@
 import Layout from "../../components/Layout/Layout";
 import Nav from "../../components/Nav/Nav";
 import { Card } from "../../components/Card/Card";
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from "framer-motion";
+import Footer from "../../components/Footer/Footer";
+import { Extras } from "../Index/Extras";
 
 const Shop = () => {
-    console.log("Shop")
+
+    const circleContainer = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: circleContainer,
+        offset: ["start end", "end start"]
+    })
+
+
+    const height = useTransform(scrollYProgress, [0, 0.9], [50, 0])
+
+    
     return (
-        <>
-        <Nav/>
-        <div id="shop-root" className="h-screen p-4">
+        <div className="bg-[#352f36]">
+            <Nav/>
+            <div id="shop-wrapper" className="min-h-screen bg-[#FAF9F6]">
 
-            <div id="body-container" className="mt-[4em] mx-[2vw]">
-                <div id="shop-header">
-                    <h1 className="uppercase !text-[6rem] text-[#352f36]">ALL</h1>
+                <div id="shop-container" className="mt-[4em] mx-[2vw] p-4">
+                    <div id="shop-header">
+                        <h1 className="uppercase !text-[6rem] text-[#352f36]">ALL</h1>
+                    </div>
+
+                    <div id="filter-system-container">
+                    </div>
+
+                    <div id="shop-grid" className="grid md:grid-cols-[1fr_1fr_1fr_1fr]">
+
+                        <Card productName="Item 1"/>
+                        <Card productName="Item 2"/>
+                        <Card productName="Item 3"/>
+                        <Card productName="Item 4"/>
+
+                        <Card productName="Item 1"/>
+                        <Card productName="Item 2"/>
+                        <Card productName="Item 3"/>
+                        <Card productName="Item 4"/>
+
+
+                        <Card productName="Item 1"/>
+                        <Card productName="Item 2"/>
+                        <Card productName="Item 3"/>
+                        <Card productName="Item 4"/>
+
+                    </div>
                 </div>
 
-                <div id="filter-system-container">
 
+                <div className="overflow-x-hidden overflow-y-hidden bg-[#352f36]">
+                    <Extras showSlider={false}/>
                 </div>
 
 
 
-                <div id="shop-grid" className="grid md:grid-cols-[1fr_1fr_1fr_1fr]">
-
-                    <Card productName="Item 1"/>
-                    <Card productName="Item 2"/>
-                    <Card productName="Item 3"/>
-                    <Card productName="Item 4"/>
-
-                </div>
+                <Footer/>
 
             </div>
         </div>
-        </>
     )
 
 }

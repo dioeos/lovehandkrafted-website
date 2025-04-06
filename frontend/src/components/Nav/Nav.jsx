@@ -41,10 +41,10 @@ const Nav = () => {
     };
 
     return (
-        <div className="">
+        <div className="satoshi">
             <motion.div 
                 id="header" 
-                className="bg-[#f4f0ea] fixed top-0 left-0 w-full box-border p-2 text-[#0B1215] z-100"
+                className="bg-[#f4f0ea] fixed top-0 left-0 w-full box-border p-2 text-[#352f36] z-100"
                 initial={showAnimation ? { opacity: 0, y: -50 } : false}
                 animate={showAnimation ? { opacity: 1, y: 0} : false}
                 transition={{

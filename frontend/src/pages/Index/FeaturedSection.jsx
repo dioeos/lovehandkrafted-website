@@ -15,19 +15,20 @@ export const FeaturedSection = () => {
 
     return (
 
-        <section id="featured-section" className="h-screen">
+        <section id="featured-section" className="bg-[#FAF9F6]">
 
-            <motion.div id="header" style={{ y, initial: "0px"}} className="p-2 md:p-4 ml-[2vw]">
-                <h1 className="satoshi text-[1.5rem] md:text-[2rem] uppercase leading-[1.3]">Featured Products</h1>
-            </motion.div>
+            <div ref={featuredContainer} className="bg-[#FAF9F6]">
 
-            <div ref={featuredContainer} className="bg-[#352f36]">
-
-                <div id="carousel-wrapper" className="overflow-x-hidden z-50">
-                    <Carousel />
-                </div>
-
+                <motion.div id="header" style={{ y, initial: "0px"}} className="p-2 md:p-4 ml-[2vw] mb-0 bg-[#FAF9F6]">
+                    <h1 className="satoshi text-[1.5rem] md:text-[2rem] uppercase leading-[1.3]">Featured Products</h1>
+                </motion.div>
             </div>
+
+
+            <div id="carousel-wrapper" className="overflow-x-hidden overflow-y-hidden bg-[#352f36] -mt-[1px]">
+                <Carousel />
+            </div>
+
 
         </section>
 

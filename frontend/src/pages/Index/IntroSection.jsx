@@ -12,7 +12,7 @@ export const IntroSection = () => {
     const y = useTransform(scrollYProgress, [0,1], [0, -350])
     const y2 = useTransform(scrollYProgress, [0,1], [0, -300])
     return (
-        <section id="intro-section" className="h-[50vh]">
+        <section id="intro-section" className="h-[50vh] bg-[#FAF9F6]">
             <div ref={introContainer} className="p-4 grid grid-rows-[auto_auto_auto] md:grid-cols-[1fr_2fr]">
                     
                 <motion.div id="image-container" className="bg-gray-500 hidden md:flex justify-center items-center" style={{ y, initial: "0px"}}>

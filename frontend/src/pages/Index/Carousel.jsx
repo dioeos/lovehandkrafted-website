@@ -34,9 +34,9 @@ export const Carousel = () => {
     const height = useTransform(scrollYProgress, [0, 0.9], [50, 0])
 
     return (
-        <div ref={carouselContainer} id="sliding-images" className="flex flex-col gap-[3vw] relative bg-[#FAF9F6] z-1 mb-[100vh]">
+        <div ref={carouselContainer} id="sliding-images" className="flex flex-col gap-[3vw] relative bg-[#FAF9F6] z-1 mb-[50vh]">
 
-            <motion.div style={{ x: x1 }} id="slider" className="flex relative gap-[3vw] w-[120vw] left-[-10vw]">
+            <motion.div style={{ x: x1 }} id="slider" className="flex relative gap-[3vw] w-[120vw] left-[-10vw] bg-[#FAF9F6]">
                 {
                     slider.map( (project, index) => {
                         return(

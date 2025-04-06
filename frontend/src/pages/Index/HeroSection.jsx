@@ -19,7 +19,7 @@ export const HeroSection = () => {
     const phrase = "We create with a Heart.";
     return (
 
-        <section id="hero-section" className='p-4 min-h-screen'>
+        <section id="hero-section" className='p-4 min-h-screen bg-[#FAF9F6]'>
             <div ref={heroContainer} id='body' className='ml-[2vw] mt-[40vh]'>
 
                 <div className="relative">

@@ -1,5 +1,5 @@
 # Lovehandkrafted e-Commerce Shop
-This repository contains all the code fpor the Lovehandkrafted Shop, a Phillipines based business that focuses on handcrafted items, ranging from home decor to accessories. The online store is built to showcase products, provide an online presence and ultimately serve as an e-Commerce application.
+This repository contains all the code for the Lovehandkrafted Shop, a Philippines based business that focuses on handcrafted items, ranging from home decor to accessories. The online store is built to showcase products, provide an online presence, and ultimately serve as an e-Commerce application.
 
 # Visit The Site
 Currently, the site is still under development. However, here are some progress images of the website:

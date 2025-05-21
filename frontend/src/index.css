@@ -7,10 +7,54 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  /* background-color: #242424; */
+  background-color: #FAF9F6;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.josefin-slab {
+  font-family: "Josefin Slab", serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Change to 300, 700 as needed */
+  font-style: normal;
+}
+.manrope {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi-Regular';
+  src: url('../public/fonts/Satoshi-Regular.woff2') format('woff2'),
+       url('../public/fonts/Satoshi-Regular.woff') format('woff'),
+       url('../public/fonts/Satoshi-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Satoshi-Regular';
+  src: url('../public/fonts/Satoshi-Italic.woff2') format('woff2'),
+       url('../public/fonts/Satoshi-Italic.woff') format('woff'),
+       url('../public/fonts/Satoshi-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+
+
+.satoshi {
+  font-family: 'Satoshi-Regular';
+}
+
+.satoshi-italic {
+  font-family: 'Satoshi-Regular';
+  font-style: italic;
 }

@@ -4,6 +4,9 @@ import { useAuth } from "../../utils/authentication/AuthProvider";
 
 import AuthForm from "../../components/LoginForm/LoginForm";
 import Layout from "../../components/Layout/Layout";
+import Nav from "../../components/Nav/Nav";
+import { Extras } from "../Index/Extras";
+import Footer from "../../components/Footer/Footer";
 
 
 
@@ -30,11 +33,21 @@ const Login = ({ initialMethod }) => {
     const route = method === 'login' ?  '/authentication/dj-rest-auth/login/': '/authentication/dj-rest-auth/registration/';
 
     return (
-        <Layout>
-            <div>
-                <AuthForm route={route} method={method} />
+        <div>
+            <Nav/>
+            <div id="auth-wrapper" className="bg-#[FAF9F6]">
+
+                <div id="auth-container">
+                    <AuthForm route={route} method={method} />
+                </div>
+
+                <div className="overflow-x-hidden overflow-y-hidden bg-[#352f36]">
+                    <Extras showSlider={false}/>
+                </div>
+
+                <Footer/>
             </div>
-        </Layout>
+        </div>
     )
 }
 export default Login;

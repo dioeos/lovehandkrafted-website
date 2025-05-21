@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer
 from django.core.exceptions import ValidationError
@@ -21,6 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ["email", "password", "first_name", "last_name", "is_vendor"]
+        read_only_fields = ["is_vendor"]
         extra_kwargs = {
             "password": {"write_only": True, "validators": [validate_password]}
         }
@@ -51,17 +52,20 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     @transaction.atomic
     def save(self, request):
-        # user.first_name = self.data.get("first_name", "")
-        first_name = self.validated_data["first_name"]
-        # user.last_name = self.data.get("last_name", "")
-        last_name = self.validated_data["last_name"]
-        email = self.validated_data["email"]
-
-        # normalize the email to prevent dupes / case sensitive
-        email = get_user_model().objects.normalize_email(email)
+        email = get_user_model().objects.normalize_email(self.validated_data["email"])
         self.validated_data["email"] = email
 
-        user = super().save(request)
+        first_name = self.validated_data["first_name"]
+        last_name = self.validated_data["last_name"]
+
+        # to catch duplicate insert
+        try:
+            user = super().save(request)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                {"email": ["A user with that email already exists."]}
+            )
+
         user.first_name = first_name
         user.last_name = last_name
         user.save(update_fields=["first_name", "last_name"])
@@ -110,6 +114,8 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     def validate_last_name(self, last_name):
         name = last_name.strip()
+
+        name = name.replace("\u2019", "'")
         if any(ord(ch) < 32 for ch in name):
             raise serializers.ValidationError(
                 "Last name contains invalid control characters."
@@ -119,7 +125,7 @@ class CustomRegisterSerializer(RegisterSerializer):
                 raise serializers.ValidationError(
                     "Last name may not contain symbols or emojis."
                 )
-        if not re.match(r"^[A-Za-z]+(?:[ '-][A-Za-z]+)*$", name):
+        if not self.NAME_REGEX.match(name):
             raise serializers.ValidationError(
                 "Last name may only contain letters, spaces, apostrophes or hyphens."
             )

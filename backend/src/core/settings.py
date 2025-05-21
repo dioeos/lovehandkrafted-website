@@ -119,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
         "OPTIONS": {
-            "min_length": 9,
+            "min_length": 5,
         },
     },
     {
@@ -141,6 +141,11 @@ REST_FRAMEWORK = {
         # if jwt access token is present -> authenticated
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {"user": "50/minute", "anon": "25/minute"},
     # ? COMMENTED
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',

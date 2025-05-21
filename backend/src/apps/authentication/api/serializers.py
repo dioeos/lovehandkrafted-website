@@ -12,7 +12,7 @@ from django.contrib.auth import (
     get_user_model,
 )
 from django.contrib.auth.password_validation import validate_password
-import re
+import re, unicodedata
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -82,6 +82,48 @@ class CustomRegisterSerializer(RegisterSerializer):
             )
 
         return email
+
+    NAME_REGEX = re.compile(r"^[A-Za-z]+(?:(?:[ '\u2019-])[A-Za-z]+)*$")
+
+    def validate_first_name(self, first_name):
+        name = first_name.strip()
+
+        name = name.replace("\u2019", "'")
+
+        if any(ord(ch) < 32 for ch in name):
+            raise serializers.ValidationError(
+                "First name contains invalid control characters."
+            )
+
+        for ch in name:
+            if unicodedata.category(ch).startswith("S"):
+                raise serializers.ValidationError(
+                    "First name may not contain symbols or emojis."
+                )
+
+        if not self.NAME_REGEX.match(name):
+            raise serializers.ValidationError(
+                "First name may only contain letters, spaces, apostrophes or hyphens."
+            )
+
+        return name
+
+    def validate_last_name(self, last_name):
+        name = last_name.strip()
+        if any(ord(ch) < 32 for ch in name):
+            raise serializers.ValidationError(
+                "Last name contains invalid control characters."
+            )
+        for ch in name:
+            if unicodedata.category(ch).startswith("S"):
+                raise serializers.ValidationError(
+                    "Last name may not contain symbols or emojis."
+                )
+        if not re.match(r"^[A-Za-z]+(?:[ '-][A-Za-z]+)*$", name):
+            raise serializers.ValidationError(
+                "Last name may only contain letters, spaces, apostrophes or hyphens."
+            )
+        return name
 
 
 class CustomLoginSerializer(LoginSerializer):

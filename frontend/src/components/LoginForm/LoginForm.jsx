@@ -55,10 +55,8 @@ const AuthForm = ({ route, method }) => {
         } catch (error) {
 
             if (error.response) {
-                console.log(error.response)
                 if (error.response.status === 401) {
                     const errorMessage = error.response.data.detail || error.response.data.message;
-                    console.log(error.response)
 
                     if (errorMessage.includes("verified")) {
                         setError("Your email is not verified. Please check your inbox.")
@@ -192,7 +190,7 @@ const AuthForm = ({ route, method }) => {
                             {method === 'login' && (
                                 <div className="satoshi">
 
-                                    <p className="text-sm text-gray-600 text-center satoshi">
+                                    <p className="text-sm text-[#352f36] text-center satoshi">
                                         Don't have an account?{" "}
                                         <span className="text-blue-600 cursor-pointer satoshi" onClick={() => navigate("/account/register")}>
                                             Register
@@ -200,7 +198,7 @@ const AuthForm = ({ route, method }) => {
                                     </p>
 
 
-                                    <p className="text-sm text-gray-600 text-center">
+                                    <p className="text-sm text-[#352f36] text-center">
                                         <span className="text-blue-600 cursor-pointer satoshi" onClick={() => navigate("/account/password/recover")}>
                                             Forgot your password?
                                         </span>
@@ -208,7 +206,7 @@ const AuthForm = ({ route, method }) => {
                                 </div>
                             )}
                             {method === 'register' && (
-                                <p className="text-sm text-gray-600 text-center satoshi">
+                                <p className="text-sm text-[#352f36] text-center satoshi">
                                     Already have an account?{" "}
                                     <span className="text-blue-600 cursor-pointer satoshi" onClick={() => navigate("/account/login")}>
                                         Login

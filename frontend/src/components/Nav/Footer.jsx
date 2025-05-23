@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div
       id="footer"
-      className="flex items-start flex-wrap uppercase mt-[20px] text-[12px] md:text-[18px] flex-col md:flex-row md:gap-[5rem]"
+      className="flex items-start flex-wrap uppercase mt-[30px] md:mt-[70px] text-[12px] md:text-[18px] flex-col md:flex-row md:gap-[5rem]"
     >
       <ul className="list-none mt-[5px] overflow-hidden p-0">
         <motion.li

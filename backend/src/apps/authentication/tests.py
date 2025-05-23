@@ -51,7 +51,7 @@ class ModelTests(TestCase):
 
 class CustomLoginSerializerTests(APITestCase):
     def setUp(self):
-        self.login_url = "/api/authentication/dj-rest-auth/login/"
+        self.login_url = "/api/authentication/login/"
 
     def test_valid_credentials(self):
         """Test login with valid credentials"""
@@ -107,7 +107,7 @@ class CustomLoginSerializerTests(APITestCase):
 
 class CustomRegisterSerializerTests(APITestCase):
     def setUp(self):
-        self.register_url = "/api/authentication/dj-rest-auth/registration/"
+        self.register_url = "/api/authentication/registration/"
 
     def test_valid_registration(self):
         """Test registration with valid credentials"""
@@ -264,7 +264,7 @@ class CustomRegisterSerializerTests(APITestCase):
 class ResetPasswordTests(APITestCase):
 
     def setUp(self):
-        self.reset_password_url = "/api/authentication/dj-rest-auth/password/reset"
+        self.reset_password_url = "/api/authentication/password/reset"
 
     def test_valid_reset_password_request(self):
         """Test reset password with valid email"""

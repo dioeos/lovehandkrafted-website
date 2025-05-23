@@ -40,7 +40,7 @@ const PasswordConfirm = () => {
 
     try {
       const response = await api.post(
-        "/authentication/dj-rest-auth/password/reset/confirm/",
+        "/authentication/password/reset/confirm/",
         {
           new_password1: password,
           new_password2: password,
@@ -52,7 +52,6 @@ const PasswordConfirm = () => {
         setSuccess("Password has been reset successfully!");
       }
     } catch (error) {
-      console.log(error.response.data);
       if (error.response && error.response.data) {
         const errorData = error.response.data;
 

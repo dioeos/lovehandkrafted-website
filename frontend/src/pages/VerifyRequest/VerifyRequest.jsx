@@ -36,12 +36,9 @@ const VerifyRequest = () => {
     }
 
     try {
-      await api.post(
-        "/authentication/dj-rest-auth/registration/resend-email/",
-        {
-          email: email.trim(),
-        },
-      );
+      await api.post("/authentication/registration/resend-email/", {
+        email: email.trim(),
+      });
       setSuccess("Verification email resent! Check your inbox.");
     } catch (error) {
       if (error.response?.data?.detail) {

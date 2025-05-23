@@ -36,12 +36,9 @@ const PasswordReset = () => {
     }
 
     try {
-      const response = await api.post(
-        "/authentication/dj-rest-auth/password/reset/",
-        {
-          email: email.trim(),
-        },
-      );
+      const response = await api.post("/authentication/password/reset/", {
+        email: email.trim(),
+      });
       console.log(response);
       if (response.status === 200) {
         setSuccess(
@@ -53,6 +50,8 @@ const PasswordReset = () => {
       }
     } catch (error) {
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -35,12 +35,11 @@ const VerifyRequest = () => {
       return;
     }
 
-    // TODO:  CHANGE TO RESEND VERIFICATION
     try {
       await api.post(
         "/authentication/dj-rest-auth/registration/resend-email/",
         {
-          email: userEmail,
+          email: email.trim(),
         },
       );
       setSuccess("Verification email resent! Check your inbox.");

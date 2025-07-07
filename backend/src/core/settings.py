@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     "apps.authentication",
     "apps.newsletter",
     "apps.products",
+    # ---- Extras ----
+    "anymail",
 ]
 
 MIDDLEWARE = [
@@ -232,12 +234,12 @@ SPECTACULAR_SETTINGS = {
 
 
 # ---- SMTP Configuration ----
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config("GOOGLE_SMTP_APP_EMAIL")
-EMAIL_HOST_PASSWORD = config("GOOGLE_SMTP_APP_PASS")
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = config("GOOGLE_SMTP_APP_EMAIL")
+# EMAIL_HOST_PASSWORD = config("GOOGLE_SMTP_APP_PASS")
 
 # ---- Django Configuration ----
 AUTH_USER_MODEL = "authentication.User"  # ? custom user model
@@ -271,3 +273,12 @@ ACCOUNT_ADAPTER = (
 )
 
 EMAIL_SUBJECT_PREFIX = "[Lovehandkrafted] "
+
+
+# ---- Anymail SMTP Configuration ----
+ANYMAIL = {
+    "RESEND_API_KEY": config("RESEND_API_KEY"),
+}
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+DEFAULT_FROM_EMAIL = config("RESEND_SMTP_FROM_EMAIL")
+SERVER_EMAIL = config("RESEND_SMTP_SERVER_EMAIL")

@@ -7,7 +7,7 @@ import Footer from "../../components/Footer/Footer";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-const PasswordReset = () => {
+const VerifyRequest = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
@@ -36,20 +36,16 @@ const PasswordReset = () => {
     }
 
     try {
-      const response = await api.post("/authentication/password/reset/", {
+      await api.post("/authentication/registration/resend-email/", {
         email: email.trim(),
       });
-      console.log(response);
-      if (response.status === 200) {
-        setSuccess(
-          "We've sent you an email with a link to update your password.",
-        );
-        setTimeout(() => {
-          navigate("/account/login");
-        }, 2000);
-      }
+      setSuccess("Verification email resent! Check your inbox.");
     } catch (error) {
-      setError("Something went wrong. Please try again.");
+      if (error.response?.data?.detail) {
+        setError("Something went wrong. Try again.");
+      } else {
+        setError("Something went wrong. Try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -82,12 +78,12 @@ const PasswordReset = () => {
 
           <div className="mad-w-md mx-auto text-center satoshi">
             <h2 className="text-lg sm:text-2xl font-semibold satoshi">
-              Forgot your password?
+              Need to verify account?
             </h2>
 
             <div className="text-sm sm:text-base text-[#352f36] satoshi mb-5">
               <span className="block">We will send you an email</span>
-              <span className="block">to reset your password</span>
+              <span className="block">with a verification link</span>
             </div>
           </div>
 
@@ -119,9 +115,19 @@ const PasswordReset = () => {
                   disabled={loading}
                   className="w-full text-[#FAF9F6] transition text-base md:text-lg"
                 >
-                  {loading ? "Processing..." : "Send Reset Email"}
+                  {loading ? "Processing..." : "Send Verifiation Email"}
                 </button>
               </div>
+
+              <p className="text-sm text-[#352f36] text-center satoshi">
+                Already have an account?{" "}
+                <span
+                  className="text-blue-600 cursor-pointer satoshi"
+                  onClick={() => navigate("/account/login")}
+                >
+                  Login
+                </span>
+              </p>
             </form>
           </div>
         </div>
@@ -136,4 +142,4 @@ const PasswordReset = () => {
   );
 };
 
-export default PasswordReset;
+export default VerifyRequest;

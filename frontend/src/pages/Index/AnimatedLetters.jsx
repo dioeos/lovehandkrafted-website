@@ -1,27 +1,26 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 //animations
-import { letterAnimation } from "./anim"
-import { banner } from "./anim"
-
+import { letterAnimation } from "./anim";
+import { banner } from "./anim";
 
 export const AnimatedLetters = ({ title }) => {
-    return (
+  return (
+    <motion.span
+      className="relative inline-block overflow-hidden"
+      variants={banner}
+      initial="initial"
+      animate="animate"
+    >
+      {[...title].map((letter, index) => (
         <motion.span
-            className="relative inline-block overflow-hidden" 
-            variants={banner}
-            initial='initial'
-            animate='animate'
+          key={index}
+          className="relative inline-block satoshi text-[#FAF9F6]"
+          variants={letterAnimation}
         >
-            {[...title].map((letter, index) => (
-                <motion.span
-                    key={index}
-                    className="relative inline-block satoshi" 
-                    variants={letterAnimation}
-                >
-                    {letter}
-                </motion.span>
-            ))}
+          {letter}
         </motion.span>
-    )
-}
+      ))}
+    </motion.span>
+  );
+};

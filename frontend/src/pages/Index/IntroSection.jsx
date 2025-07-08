@@ -14,17 +14,17 @@ export const IntroSection = () => {
     <section id="intro-section" className="h-[50vh] bg-[#FAF9F6] mt-[11rem]">
       <div
         ref={introContainer}
-        className="p-4 grid grid-rows-[auto_auto_auto] md:grid-cols-[1fr_2fr]"
+        className="p-4 grid grid-rows-[auto_auto_auto] md:grid-cols-[.5fr_2fr] md:gap-8"
       >
         <motion.div
           id="image-container"
-          className="bg-gray-500 hidden md:flex justify-center items-center"
+          className="bg-gray-500 hidden md:flex justify-center items-center md:h-100 md:w-90"
           style={{ y, initial: "0px" }}
         >
           <img
-            src="/your-image.jpg"
+            src="https://cdn.lovehandkrafted.com/blue_angels_2_hand_styled.jpg"
             alt="Handcrafted Gifts"
-            className="w-full max-w-xs md:max-w-sm"
+            className="h-full w-full object-cover"
           />
         </motion.div>
 

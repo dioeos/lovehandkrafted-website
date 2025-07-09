@@ -13,6 +13,7 @@ class Command(BaseCommand):
                     "Description": product.description,
                     "Active": product.active,
                     "Default_Price": product.default_price,
+                    "Thumbnail": product.thumbnail,
                     "Quantity": product.quantity,
                     "Created At": product.created_at,
                     "Updated At": product.updated_at,

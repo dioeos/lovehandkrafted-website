@@ -46,4 +46,27 @@ class ProductViewSet(viewsets.ModelViewSet):
         return super().perform_update(serializer)
     
     def perform_destroy(self, instance):
-        return super().perform_destroy(instance)
+        if instance.thumbnail:
+            try:
+                print("Deleting IMG...")
+                r2_workerbase_url = config("R2_WORKER_BASE_URL")
+                x_cust_auth_key = config("R2_WORKER_AUTH_KEY_SECRET")
+
+                key = instance.thumbnail.replace(f"{r2_workerbase_url}/", "")
+
+                delete_url = f"{r2_workerbase_url}/{key}"
+
+                res = requests.delete(
+                    delete_url,
+                    headers={
+                        "X-Custom-Auth-Key": x_cust_auth_key
+                    }
+                )
+
+                if res.status_code != 200:
+                    raise Exception("Image deletion from R2 failed")
+
+            except Exception as e:
+                print(f"Error during R2 deletion: {e}")
+
+        super().perform_destroy(instance)

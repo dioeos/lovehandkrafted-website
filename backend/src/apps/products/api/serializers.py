@@ -46,6 +46,7 @@ class ProductSerializer(serializers.ModelSerializer):
         product = Product.objects.create(**validated_data)
         for tag_data in tags_data:
             #iterates over tags_data dictionary and gets or create tag
+            print("TAG FOUND")
             tag_name = tag_data.get('name')
             if tag_name:
                 tag, _ = ProductTag.objects.get_or_create(name=tag_name)

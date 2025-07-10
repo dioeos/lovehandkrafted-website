@@ -7,12 +7,23 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #FAF9F6;
+  background-color: #faf9f6;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --sidebar-w: 80vw;
+}
+@media (min-width: 768px) {
+  :root {
+    --sidebar-w: 50vw;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --sidebar-w: 30vw;
+  }
 }
 
 .josefin-slab {
@@ -29,32 +40,32 @@
 }
 
 @font-face {
-  font-family: 'Satoshi-Regular';
-  src: url('../public/fonts/Satoshi-Regular.woff2') format('woff2'),
-       url('../public/fonts/Satoshi-Regular.woff') format('woff'),
-       url('../public/fonts/Satoshi-Regular.ttf') format('truetype');
+  font-family: "Satoshi-Regular";
+  src:
+    url("../public/fonts/Satoshi-Regular.woff2") format("woff2"),
+    url("../public/fonts/Satoshi-Regular.woff") format("woff"),
+    url("../public/fonts/Satoshi-Regular.ttf") format("truetype");
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
 
-
 @font-face {
-  font-family: 'Satoshi-Regular';
-  src: url('../public/fonts/Satoshi-Italic.woff2') format('woff2'),
-       url('../public/fonts/Satoshi-Italic.woff') format('woff'),
-       url('../public/fonts/Satoshi-Italic.ttf') format('truetype');
+  font-family: "Satoshi-Regular";
+  src:
+    url("../public/fonts/Satoshi-Italic.woff2") format("woff2"),
+    url("../public/fonts/Satoshi-Italic.woff") format("woff"),
+    url("../public/fonts/Satoshi-Italic.ttf") format("truetype");
   font-weight: 400;
   font-display: swap;
   font-style: italic;
 }
 
-
 .satoshi {
-  font-family: 'Satoshi-Regular';
+  font-family: "Satoshi-Regular";
 }
 
 .satoshi-italic {
-  font-family: 'Satoshi-Regular';
+  font-family: "Satoshi-Regular";
   font-style: italic;
 }

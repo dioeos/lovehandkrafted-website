@@ -2,11 +2,18 @@ import Layout from "../../components/Layout/Layout";
 import Nav from "../../components/Nav/Nav";
 import { Card } from "../../components/Card/Card";
 import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useAnimation,
+  AnimatePresence,
+} from "framer-motion";
 import Footer from "../../components/Footer/Footer";
 import { Extras } from "../Index/Extras";
 import api from "../../utils/lib/api";
-import { IoIosOptions } from "react-icons/io";
+import { IoIosOptions, IoMdClose } from "react-icons/io";
+import FilterMenu from "../../components/FilterMenu/FilterMenu";
 
 const Shop = () => {
   const circleContainer = useRef(null);
@@ -32,6 +39,8 @@ const Shop = () => {
     fetchProducts();
   }, []);
 
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   return (
     <div className="bg-[#352f36]">
       <Nav />
@@ -43,12 +52,33 @@ const Shop = () => {
             </h1>
           </div>
 
-          <div
-            id="filter-system-container"
-            className="flex items-center satoshi mb-2"
-          >
-            <IoIosOptions />
-            FILTER
+          <div id="filter-system-container" className="">
+            {/* toggle button */}
+            <button
+              id="filter-system-button"
+              className="z-[200]"
+              onClick={() => {
+                console.log(isFilterOpen);
+                setIsFilterOpen(!isFilterOpen);
+              }}
+            >
+              <div className="flex items-center satoshi mb-2">
+                <IoIosOptions />
+                FILTER
+              </div>
+            </button>
+          </div>
+
+          {/* =====FILTER MENU =====*/}
+          <div className="">
+            <AnimatePresence mode="wait">
+              {isFilterOpen && (
+                <FilterMenu
+                  isOpen={isFilterOpen}
+                  onClose={() => setIsFilterOpen(false)}
+                />
+              )}
+            </AnimatePresence>
           </div>
 
           <div

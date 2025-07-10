@@ -35,6 +35,7 @@ import VendorAccounts from "./pages/VendorDashboard/VendorAccounts";
 import VendorFinances from "./pages/VendorDashboard/VendorFinances";
 import VendorProducts from "./pages/VendorDashboard/VendorProducts";
 import VendorAddProducts from "./pages/VendorDashboard/VendorAddProducts";
+import VendorEditProducts from "./pages/VendorDashboard/VendorEditProducts.jsx";
 
 function App() {
   return (
@@ -104,6 +105,10 @@ function App() {
               <Route
                 path="/vendor-dashboard/products/add"
                 element={<VendorAddProducts />}
+              />
+              <Route
+                path="/vendor-dashboard/products/edit/:id"
+                element={<VendorEditProducts />}
               />
             </Route>
           </Route>

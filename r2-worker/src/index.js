@@ -2,17 +2,13 @@ const hasValidHeader = (request, env) => {
 	return request.headers.get('X-Custom-Auth-Key') === env.AUTH_KEY_SECRET;
 };
 
-const hasValidGetToken = (request, env) => {
-	return request.headers.get('X-Read-Token') === env.READ_ONLY_TOKEN;
-};
-
 function authorizeRequest(request, env, key) {
 	switch (request.method) {
 		case 'PUT':
 		case 'DELETE':
 			return hasValidHeader(request, env);
 		case 'GET':
-			return hasValidGetToken(request, env);
+			return true;
 		default:
 			return false;
 	}

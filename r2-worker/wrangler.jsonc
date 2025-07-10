@@ -25,7 +25,7 @@
 	"r2_buckets": [
 		{
 			"binding": "LHK_PRODUCT_BUCKET",
-			"bucket_name": "lovehandkrafted-images",
+			"bucket_name": "lovehandkrafted-products",
 		},
 	],
 

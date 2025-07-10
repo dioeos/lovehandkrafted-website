@@ -29,6 +29,23 @@ export const height = {
   },
 };
 
+export const background = {
+  initial: {
+    height: 0,
+  },
+
+  open: {
+    height: "100vh",
+
+    transition,
+  },
+
+  closed: {
+    height: 0,
+    transition,
+  },
+};
+
 export const blur = {
   initial: {
     filter: "blur(0px)",

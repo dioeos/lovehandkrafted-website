@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import { opacity } from "./anim";
+import { opacity, background } from "./anim";
 import { useLocation } from "react-router-dom";
 
 import Menu from "./Menu";
@@ -42,7 +42,7 @@ const Nav = () => {
     <div className="satoshi">
       <motion.div
         id="header"
-        className="bg-[#f4f0ea] fixed top-0 left-0 w-full box-border p-2 text-[#352f36] z-100 "
+        className="bg-[#f4f0ea] fixed top-0 left-0 w-full box-border p-2 text-[#352f36] z-[80]"
         initial={showAnimation ? { opacity: 0, y: -50 } : false}
         animate={showAnimation ? { opacity: 1, y: 0 } : false}
         transition={{
@@ -139,21 +139,22 @@ const Nav = () => {
             </div>
           </motion.div>
         </div>
-        {/* <AnimatePresence mode="wait">
-                        {isActive && (
-                            <motion.div className="absolute top-full left-0 w-full">
-                                <Menu />
-                            </motion.div>
 
-                        )}
-                    </AnimatePresence> */}
         <AnimatePresence mode="wait">
           {isActive && (
             <div className="">
-              <Menu />
+              <Menu isOpen={isActive} onClose={() => setIsActive(false)} />
             </div>
           )}
         </AnimatePresence>
+
+        <motion.div
+          variants={background}
+          initial="initial"
+          animate={isActive ? "open" : "closed"}
+          className="bg-gray-800/40 h-full w-full absolute left-0 top-full"
+          onClick={() => setIsActive(false)}
+        ></motion.div>
       </motion.div>
     </div>
   );

@@ -14,6 +14,7 @@ import { Extras } from "../Index/Extras";
 import api from "../../utils/lib/api";
 import { IoIosOptions, IoMdClose } from "react-icons/io";
 import FilterMenu from "../../components/FilterMenu/FilterMenu";
+import { background } from "./anim.js";
 
 const Shop = () => {
   const circleContainer = useRef(null);
@@ -79,6 +80,14 @@ const Shop = () => {
                 />
               )}
             </AnimatePresence>
+
+            <motion.div
+              variants={background}
+              initial="initial"
+              animate={isFilterOpen ? "open" : "closed"}
+              className="bg-gray-800/40 w-full fixed right-0 inset-y-0 z-[90]"
+              onClick={() => setIsFilterOpen(false)}
+            ></motion.div>
           </div>
 
           <div

@@ -7,16 +7,8 @@ const FilterMenu = ({ isOpen, onClose }) => {
   return (
     <div>
       <motion.div
-        initial="initial"
-        animate="enter"
-        exit="exit"
-        variants={overlay}
-        className="fixed inset-0 bg-gray-800/40 z-[100] h-screen"
-        onClick={onClose}
-      ></motion.div>
-      <motion.div
         id="menu"
-        className="z-[100] bg-green-500 fixed top-0 right-0 h-screen"
+        className="z-[100] bg-[#352f36] fixed top-0 right-0 h-screen"
         initial="initial"
         animate="enter"
         exit="exit"

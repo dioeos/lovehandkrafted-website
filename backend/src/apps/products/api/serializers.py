@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from ..models import Product, ProductTag
+import json
 
 class ProductTagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,12 +42,18 @@ class ProductSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """Handles product creation"""
         print("CREATING...")
-        tags_data = validated_data.pop('tags', []) #extract tags
-        print(f"Tags Data: {tags_data}")
+        print(f"Validated Data: {validated_data}")
+        tags_raw = self.initial_data.get('tags', '[]')
+        try:
+            tags_data = json.loads(tags_raw)
+        except json.JSONDecodeError:
+            tags_data = []
+        validated_data.pop('tags', None)
+        print(f"Parsed Tags Data: {tags_data}")
+
         product = Product.objects.create(**validated_data)
+
         for tag_data in tags_data:
-            #iterates over tags_data dictionary and gets or create tag
-            print("TAG FOUND")
             tag_name = tag_data.get('name')
             if tag_name:
                 tag, _ = ProductTag.objects.get_or_create(name=tag_name)
@@ -57,16 +64,23 @@ class ProductSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         """Handles product updates"""
-        tags_data = validated_data.pop('tags', None) #pop tags
+        tags_raw = self.initial_data.get('tags', '[]')
+        try:
+            tags_data = json.loads(tags_raw)
+        except json.JSONDecodeError:
+            tags_data = []
+
+        validated_data.pop('tags', None)
+        print(f"Updated Parsed Tags Data: {tags_data}")
+
         for attr, value in validated_data.items():
             setattr(instance, attr, value) #update fields
-        if tags_data is not None:
-            instance.tags.clear()
-            for tag_data in tags_data:
-                tag_name = tag.get('name')
-                if tag_name:
-                    tag, _ = ProductTag.objects.get_or_create(name=tag_name)
-                    instance.tags.add(tag)
+        for tag_data in tags_data:
+            tag_name = tag_data.get('name')
+            if tag_name:
+                tag, _ = ProductTag.objects.get_or_create(name=tag_name)
+                print(f"Updated Tag Object: {tag}")
+                instance.tags.add(tag)
 
         instance.save()
         return instance

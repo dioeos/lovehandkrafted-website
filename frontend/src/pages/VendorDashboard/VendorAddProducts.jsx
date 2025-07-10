@@ -28,15 +28,8 @@ const VendorAddProducts = () => {
     setError(null);
 
     const formattedTags = tags.map((tag) => ({ name: tag.trim() }));
+    console.log(formattedTags);
 
-    // console.log("Request Body:", {
-    //   name: name.trim(),
-    //   description: description.trim(),
-    //   default_price: defaultPrice.trim(),
-    //   thumbnail_url: thumbnailUrl.trim(),
-    //   quantity: quantity.trim(),
-    //   tags: formattedTags,
-    // });
     const formData = new FormData();
     formData.append("name", name.trim());
     formData.append("description", description.trim());
@@ -44,6 +37,10 @@ const VendorAddProducts = () => {
     formData.append("quantity", quantity.trim());
     formData.append("tags", JSON.stringify(formattedTags));
     formData.append("image", imageFile);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
 
     try {
       // const response = await api.post("/products/", {

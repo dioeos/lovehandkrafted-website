@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Footer from "../../components/Footer/Footer";
 import { Extras } from "../Index/Extras";
 import api from "../../utils/lib/api";
+import { IoIosOptions } from "react-icons/io";
 
 const Shop = () => {
   const circleContainer = useRef(null);
@@ -42,9 +43,18 @@ const Shop = () => {
             </h1>
           </div>
 
-          <div id="filter-system-container"></div>
+          <div
+            id="filter-system-container"
+            className="flex items-center satoshi mb-2"
+          >
+            <IoIosOptions />
+            FILTER
+          </div>
 
-          <div id="shop-grid" className="grid grid-cols-2 md:grid-cols-4">
+          <div
+            id="shop-grid"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          >
             {products.map((product) => (
               <Card
                 key={product.id}

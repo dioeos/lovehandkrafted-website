@@ -33,6 +33,17 @@ const VendorProducts = () => {
     }
   };
 
+  // const handleUpdate = async (productId) => {
+  //   try {
+  //     const response = await api.patch(`/products/${productId}`);
+  //     setProducts((prevProducts) =>
+  //       prevProducts.filter((product) => product.id !== productId),
+  //     );
+  //   } catch (error) {
+  //     console.error("Failed to update product", error);
+  //   }
+  // };
+
   return (
     <div className="rounded-lg shadow h-full overflow-y-auto relative bg-white">
       <Topbar />
@@ -50,11 +61,22 @@ const VendorProducts = () => {
               <div className="flex flex-row gap-3">
                 <button
                   className="cursor-pointer"
-                  onClick={() => handleDelete(product.id)}
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        "Are you sure you want to delete this product?",
+                      )
+                    ) {
+                      handleDelete(product.id);
+                    }
+                  }}
                 >
                   <FaTrash className="text-black" />
                 </button>
-                <a className="cursor-pointer" href="#">
+                <a
+                  className="cursor-pointer"
+                  href={`/vendor-dashboard/products/edit/${product.id}`}
+                >
                   <FaEdit className="text-black" />
                 </a>
               </div>

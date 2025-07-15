@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { blur, translate } from "./anim";
+import { translate } from "./anim";
 import { Link } from "react-router-dom";
 
 const Body = ({ links, selectedLink, setSelectedLink }) => {
@@ -41,13 +41,12 @@ const Body = ({ links, selectedLink, setSelectedLink }) => {
               onMouseLeave={() => {
                 setSelectedLink({ isActive: false, index });
               }}
-              variants={blur}
               animate={
                 selectedLink.isActive && selectedLink.index !== index
                   ? "open"
                   : "closed"
               }
-              className={`text-[#352f36] m-0 flex flex-wrap overflow-hidden text-3xl md:text-4xl lg:text-7xl pr-[32px] pt-[10px] font-light ${title === "Shop" ? "satoshi-italic" : ""}`}
+              className="text-[#352f36] m-0 flex flex-wrap overflow-hidden text-3xl md:text-4xl lg:text-7xl pr-[32px] pt-[10px] font-light"
             >
               {getChars(title)}
             </motion.p>

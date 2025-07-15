@@ -9,19 +9,21 @@ class ProductTagSerializer(serializers.ModelSerializer):
 
     def validate_name(self, value):
         """Ensure that tag name is unique"""
-        print("VALIDATING PRODUCT TAG")
         return value
 
     def create(self, validated_data):
         """Tag create method, fetches or creates"""
-        print("CALLING CREATE PRODUCT TAG")
         tag_name = validated_data.get('name')
         tag, _ = ProductTag.objects.get_or_create(name=tag_name)
         return tag
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    tags = ProductTagSerializer(many=True, required=False)
+    tags = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
 
     class Meta:
         model = Product

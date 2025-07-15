@@ -12,7 +12,7 @@ import {
 import Footer from "../../components/Footer/Footer";
 import { Extras } from "../Index/Extras";
 import api from "../../utils/lib/api";
-import { IoIosOptions, IoMdClose } from "react-icons/io";
+import { IoIosOptions } from "react-icons/io";
 import FilterMenu from "../../components/FilterMenu/FilterMenu";
 import { background } from "./anim.js";
 
@@ -26,13 +26,14 @@ const Shop = () => {
   const height = useTransform(scrollYProgress, [0, 0.9], [50, 0]);
 
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await api.get("/products/");
-        console.log(response);
         setProducts(response.data);
+        setFilteredProducts(response.data); //default
       } catch (error) {
         console.error(error);
       }
@@ -42,6 +43,38 @@ const Shop = () => {
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [sortOption, setSortOption] = useState(null);
+
+  const handleApplyFilters = () => {
+    let result = [...products];
+    console.log(result);
+
+    if (selectedCategories.length > 0) {
+      result = result.filter((product) =>
+        product.tags.some((tag) => selectedCategories.includes(tag)),
+      );
+    }
+
+    switch (sortOption) {
+      case "price-asc":
+        result.sort((a, b) => a.default_price - b.default_price);
+        break;
+      case "price-desc":
+        result.sort((a, b) => b.default_price - a.default_price);
+        break;
+      case "first":
+        result.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        break;
+      case "latest":
+        result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        break;
+    }
+
+    setFilteredProducts(result);
+    setIsFilterOpen(false);
+  };
+
   return (
     <div className="bg-[#352f36]">
       <Nav />
@@ -49,7 +82,7 @@ const Shop = () => {
         <div id="shop-container" className="mt-[4em] mx-[2vw] p-4">
           <div id="shop-header">
             <h1 className="uppercase !text-[4rem] md:!text-[6rem] text-[#352f36] satoshi">
-              ALL
+              SHOP
             </h1>
           </div>
 
@@ -77,6 +110,11 @@ const Shop = () => {
                 <FilterMenu
                   isOpen={isFilterOpen}
                   onClose={() => setIsFilterOpen(false)}
+                  sortOption={sortOption}
+                  setSortOption={setSortOption}
+                  selectedCategories={selectedCategories}
+                  setSelectedCategories={setSelectedCategories}
+                  onApply={handleApplyFilters}
                 />
               )}
             </AnimatePresence>
@@ -94,7 +132,7 @@ const Shop = () => {
             id="shop-grid"
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
           >
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <Card
                 key={product.id}
                 productName={product.name}

@@ -61,6 +61,17 @@
   font-style: italic;
 }
 
+@font-face {
+  font-family: "Satoshi-Regular";
+  src:
+    url("../public/fonts/Satoshi-Bold.woff2") format("woff2"),
+    url("../public/fonts/Satoshi-Bold.woff") format("woff"),
+    url("../public/fonts/Satoshi-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
 .satoshi {
   font-family: "Satoshi-Regular";
 }
@@ -68,4 +79,9 @@
 .satoshi-italic {
   font-family: "Satoshi-Regular";
   font-style: italic;
+}
+
+.satoshi-bold {
+  font-family: "Satoshi-Regular";
+  font-weight: 700;
 }

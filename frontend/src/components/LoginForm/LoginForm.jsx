@@ -84,7 +84,7 @@ const AuthForm = ({ route, method }) => {
       <div id="login-wrapper" className="h-screen bg-[#FAF9F6]">
         <div id="login-container" className="mt-[4em] p-4 mx-[2vw]">
           <div id="login-header">
-            <h1 className="uppercase !text-[4rem] md:!text-[6rem] text-[#352f36] satoshi text-center">
+            <h1 className="uppercase !text-[2.5rem] md:!text-[6rem] text-[#352f36] satoshi text-center">
               {method === "register" ? "Register" : "Login"}
             </h1>
 
@@ -179,7 +179,7 @@ const AuthForm = ({ route, method }) => {
                 />
               </div>
 
-              <div className="rounded-lg bg-blue-500 p-2">
+              <div className="rounded-lg bg-[#352f36] p-2">
                 <button
                   type="submit"
                   className="w-full text-[#FAF9F6] transition text-base md:text-lg"

@@ -92,7 +92,7 @@ const VerifyEmail = () => {
 
             <div className="space-y-2">
               {/* Resend button */}
-              <div className="rounded-lg bg-blue-500 p-2">
+              <div className="rounded-lg bg-[#352f36] p-2">
                 <button
                   onClick={handleSubmit}
                   disabled={loading}

@@ -14,9 +14,9 @@ const Profile = () => {
       <div id="profile-wrapper" className="bg-[#FAF9F6]">
         <div
           id="profile-container"
-          className="min-h-screen mt-[4em] mx-[2vw] grid grid-rows-[200px_1fr] p-4 bg-[#FAF9F6]"
+          className="min-h-screen mt-[4em] mx-[2vw] grid grid-rows-[150px_1fr] p-4 bg-[#FAF9F6]"
         >
-          <div id="grid-item-1">
+          <div id="grid-item-1" className="">
             <div id="profile-header">
               <h1 className="uppercase !text-[4rem] md:!text-[6rem] text-[#352f36] satoshi">
                 FAQ

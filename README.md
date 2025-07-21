@@ -3,7 +3,7 @@ This repository contains all the code for the Lovehandkrafted Shop, a Philippine
 
 # Visit The Site
 Currently, the site is still under development. However, here are some progress images of the website:
-![LHK Preview GIF](./github/lhk_preview.gif)
+![LHK Preview GIF](./assets/lhk_preview.gif)
 
 # Features
 - **PostgreSQL Database**: Stores detailed information about products and other relevant data such as user information.

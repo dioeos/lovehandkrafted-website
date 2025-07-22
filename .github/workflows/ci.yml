@@ -34,7 +34,7 @@ jobs:
           --health-retries 5
 
     steps:
-      -name: Show workspace
+      - name: Show workspace
         run: |
           pwd
           ls -R .

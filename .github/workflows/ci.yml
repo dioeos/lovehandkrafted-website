@@ -14,6 +14,10 @@ on:
 
 jobs:
   backend-tests:
+    name: Show workspace
+    run: |
+      pwd
+      ls -R .
     name: Django Tests
     runs-on: ubuntu-latest
 

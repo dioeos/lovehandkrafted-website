@@ -3,7 +3,9 @@
 import os
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
+BASE_DIR = os.path.dirname(__file__)
+SRC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "src"))
+sys.path.insert(0, SRC_ROOT)
 
 def main():
     """Run administrative tasks."""

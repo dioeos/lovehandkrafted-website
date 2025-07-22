@@ -14,7 +14,6 @@ on:
 
 jobs:
   backend-tests:
-    name: Show workspace
     name: Django Tests
     runs-on: ubuntu-latest
 

@@ -60,6 +60,7 @@ jobs:
           done
 
       - name: Run migration & tests
+        working-directory: backend
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
         run: |

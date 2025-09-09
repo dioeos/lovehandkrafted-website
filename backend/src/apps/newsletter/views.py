@@ -41,29 +41,20 @@ def send_newsletter_view(request):
     #extract frontend request data
     subject = request.data.get("subject")
     content = request.data.get("content")
-    print(f"Subject: {subject}, Content: {content}")
-
     subscribers = Subscriber.objects.all()
 
     if not subscribers:
         return Response({"message": "No subscribers found."}, status=400)
     
+    sent_count = 0
     for subscriber in subscribers:
-        context = {
-            "subject": subject,
-            "content": content,
-        }
-
-
         try:
 
             html_content = render_to_string(
                 "emails/newsletter_email.html",
                 {"subject": subject, "content": content}
             )
-            print(html_content)
 
-            #create multipart email instance
             msg = EmailMultiAlternatives(
                 subject,
                 "This is a plain text fallback",
@@ -76,9 +67,16 @@ def send_newsletter_view(request):
             msg.content_subtype = "html" 
             print(msg.message())
             msg.send()
+            sent_count += 1
         except Exception as e:
-            print("ERROR WITH TEMPLATE:", e)
+            #stops on first failure
             return Response({"error": str(e)}, status=500)
         
-    return Response({"message": "Newsletter sent successfully."}, status=200)
+    return Response(
+        {
+            "message": "Newsletter sent successfully.",
+            "sent_count": sent_count,
+        },
+        status=200
+    )
     

@@ -1,4 +1,6 @@
+from typing import override
 from django.test import TestCase
+from django.core import mail
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 from allauth.account.models import EmailAddress
@@ -104,10 +106,74 @@ class CustomLoginSerializerTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertIn("Your email is not verified.", response.data.get("detail", []))
 
+class LoginSemanticsTests(APITestCase):
+    def setUp(self):
+        self.login_url = "/api/authentication/login/"
+        self.password = "Str0ngPassword123"
+        self.user = get_user_model().objects.create_user(
+            email="mixed.case@example.com",
+            password=self.password,
+        )
+        EmailAddress.objects.create(
+            user=self.user, email=self.user.email, verified=True, primary=True
+        )
+
+    def test_login_rejects_case_and_spaces(self):
+        res = self.client.post(
+            self.login_url,
+            {
+                "email": " Mixed.CASE@example.com ",
+                "password": self.password
+            }
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertFalse(
+            any(k in getattr(res, "data", {}) for k in ("access", "refresh", "key")),
+            msg="Expected an auth token/key in the response data.",
+        )
+
+    def test_valid_login_sends_auth(self):
+        res = self.client.post(
+            self.login_url,
+            {
+                "email": self.user.email,
+                "password": self.password
+            }
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertTrue(
+            any(k in getattr(res, "data", {}) for k in ("access", "refresh", "key")),
+            msg="Expected an auth token/key in the response data.",
+        )
+
 
 class CustomRegisterSerializerTests(APITestCase):
     def setUp(self):
         self.register_url = "/api/authentication/registration/"
+
+    def test_registration_sends_confirmation_email(self):
+        pre_confirmation_count = len(mail.outbox)
+        res = self.client.post(
+            self.register_url,
+            {
+                "email": "register@example.com",
+                "password1": "password67",
+                "password2": "password67",
+                "first_name": "test",
+                "last_name": "confirmation"
+            }
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(len(mail.outbox),pre_confirmation_count+ 1)
+        self.assertIn("register@example.com", mail.outbox[-1].to)
+
+        user = get_user_model().objects.get(email="register@example.com")
+        eaddr = EmailAddress.objects.get(user=user, email=user.email)
+        self.assertTrue(eaddr.primary)
+        self.assertFalse(eaddr.verified)
 
     def test_valid_registration(self):
         """Test registration with valid credentials"""
@@ -260,6 +326,45 @@ class CustomRegisterSerializerTests(APITestCase):
         )
         self.assertTrue(user_exists)
 
+    def test_case_insensitive_uniqueness(self):
+        """Registering with case insensitive emails"""
+        password = "ComplexP@assword123!"
+        response = self.client.post(
+            self.register_url,
+            {
+                "email": "user@example.com",
+                "password1": password,
+                "password2": password,
+                "first_name": "first",
+                "last_name": "last"
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        user_exists = (
+            get_user_model().objects.filter(email="user@example.com").first()
+        )
+        self.assertTrue(user_exists)
+
+        response2 = self.client.post(
+            self.register_url,
+            {
+                "email": "USER@example.com",
+                "password1": password,
+                "password2": password,
+                "first_name": "first",
+                "last_name": "last"
+            },
+        )
+
+        self.assertEqual(response2.status_code, status.HTTP_400_BAD_REQUEST)
+        case_user = (
+            get_user_model().objects.filter(email="USER@example.com").first()
+        )
+
+        self.assertFalse(case_user)
+
+
 
 class ResetPasswordTests(APITestCase):
 
@@ -287,6 +392,65 @@ class ResetPasswordTests(APITestCase):
         # dj-rest-auth's reset password endpoint sends 200 if email does not exist or does
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+
+from django.test import override_settings
+import re
+@override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
+class ResetPasswordTestsEmailCheck(APITestCase):
+    def setUp(self):
+        self.reset_password_url = "/api/authentication/password/reset"
+        self.user = get_user_model().objects.create_user(
+            email="resetpass@example.com", password="Wow!PasswordCoolReset123"
+        )
+        EmailAddress.objects.create(
+            user=self.user, email=self.user.email, verified=True, primary=True
+        )
+
+    def test_reset_password_sends_email_for_existing_user(self):
+        pre_email_count = len(mail.outbox)
+        res = self.client.post(
+            self.reset_password_url,
+            {
+                "email": self.user.email,
+            }
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(mail.outbox), pre_email_count + 1)
+
+        msg = mail.outbox[-1]
+        self.assertIn(self.user.email, msg.to)
+
+    def test_reset_password_unknown_email_200_sends_nothing(self):
+        pre_email_count = len(mail.outbox)
+        res = self.client.post(
+            self.reset_password_url,
+            {
+                "email": "nonuser-email@example.com"
+            }
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(mail.outbox), pre_email_count)
+
+class ResendEmailTests(APITestCase):
+
+    def setUp(self):
+        self.resend_email_url = "/api/authentication/registration/resend-email"
+
+    def test_valid_email_resend_200(self):
+        """Test valid email receives a resend email, resulting in HTTP 200"""
+        response = self.client.post(
+            self.resend_email_url, {"email": "email@example.com"}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_missing_email_resend(self):
+        """Test empty email input fails to resend email, resulting in HTTP 400"""
+        response = self.client.post(
+            self.resend_email_url, {}
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 class NameValidationTests(TestCase):
     """Tests valid/invalid names for registering"""

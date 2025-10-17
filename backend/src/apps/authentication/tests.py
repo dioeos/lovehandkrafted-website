@@ -394,10 +394,12 @@ class ResetPasswordTests(APITestCase):
 
 
 from django.test import override_settings
+from django.core.cache import cache
 import re
 @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
 class ResetPasswordTestsEmailCheck(APITestCase):
     def setUp(self):
+        cache.clear()
         self.reset_password_url = "/api/authentication/password/reset"
         self.user = get_user_model().objects.create_user(
             email="resetpass@example.com", password="Wow!PasswordCoolReset123"
@@ -506,3 +508,28 @@ class NameValidationTests(TestCase):
         self.assertFalse(serializer.is_valid())
         self.assertIn("first_name", serializer.errors)
         self.assertIn("only contain letters", serializer.errors["first_name"][0])
+
+class PrivacySafetyTests(APITestCase):
+    def setUp(self):
+        self.register_url = "/api/authentication/registration/"
+        self.login_url = "/api/authentication/login/"
+
+    def test_register_response_does_not_echo_passwords(self):
+        payload = {
+            "email": "privacy@example.com",
+            "password1": "S3cure!Pass90",
+            "password2": "S3cure!Pass90",
+            "first_name": "Alice",
+            "last_name": "Smith",
+        }
+        r = self.client.post(self.register_url, payload, format="json")
+        self.assertNotIn("password1", getattr(r, "data", {}))
+        self.assertNotIn("password2", getattr(r, "data", {}))
+
+    def test_login_error_does_not_leak_existence(self):
+        r = self.client.post(
+            self.login_url, {"email": "nobody@nowhere.tld", "password": "nope"}, format="json"
+        )
+        self.assertEqual(r.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertIn("detail", r.data)
+

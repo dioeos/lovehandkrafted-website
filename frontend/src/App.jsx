@@ -36,6 +36,7 @@ import VendorFinances from "./pages/VendorDashboard/VendorFinances";
 import VendorProducts from "./pages/VendorDashboard/VendorProducts";
 import VendorAddProducts from "./pages/VendorDashboard/VendorAddProducts";
 import VendorEditProducts from "./pages/VendorDashboard/VendorEditProducts.jsx";
+import ProductPage from "./pages/ProductPage/ProductPage.jsx";
 
 function App() {
   return (
@@ -48,6 +49,8 @@ function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/contact" element={<Contact />} />
+
+          <Route path="/products/:slug" element={<ProductPage />} />
 
           {/* general auth routes */}
           <Route

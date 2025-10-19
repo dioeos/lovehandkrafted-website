@@ -1,10 +1,12 @@
 from django.db import models
+from django.utils.text import slugify
 import uuid
 
 class Product(models.Model):
     """Represents an individual product item"""
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True, db_index=True, blank=True, null=True)
     description = models.TextField(blank=True)
     active = models.BooleanField(default=True)
     default_price = models.CharField(max_length=100, blank=True, null=True)
@@ -18,6 +20,17 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.name)
+            slug = base
+            n = 2
+            while Product.objects.filter(slug=slug).exists():
+                slug = f"{base}-{n}"
+                n += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
     
 
 class ProductTag(models.Model):

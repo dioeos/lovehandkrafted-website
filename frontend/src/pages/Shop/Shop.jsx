@@ -92,7 +92,6 @@ const Shop = () => {
               id="filter-system-button"
               className="z-[200]"
               onClick={() => {
-                console.log(isFilterOpen);
                 setIsFilterOpen(!isFilterOpen);
               }}
             >
@@ -138,6 +137,7 @@ const Shop = () => {
                 productName={product.name}
                 thumbnail={product.thumbnail}
                 price={product.default_price}
+                link={`/products/${product.slug}`}
               />
             ))}
           </div>

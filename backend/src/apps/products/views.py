@@ -3,6 +3,9 @@ from .api.serializers import ProductSerializer
 
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.db import transaction
 
@@ -167,3 +170,10 @@ class ProductViewSet(viewsets.ModelViewSet):
                 pass
 
         super().perform_destroy(instance)
+
+    # GET /api/products/by-slug/<slug>/
+    @action(detail=False, url_path=r"by-slug/(?P<slug>[-a-zA-Z0-9_]+)")
+    def by_slug(self, request, slug=None):
+        obj = get_object_or_404(Product, slug=slug)
+        data = self.get_serializer(obj).data
+        return Response(data)

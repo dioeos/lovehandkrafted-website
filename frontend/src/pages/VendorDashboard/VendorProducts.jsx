@@ -15,7 +15,6 @@ const VendorProducts = () => {
         const response = await api.get("/products/");
         setProducts(response.data);
       } catch (error) {
-        console.error(error);
         setError("Failed to load products");
       }
     };

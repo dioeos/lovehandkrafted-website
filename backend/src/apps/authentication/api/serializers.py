@@ -1,3 +1,4 @@
+from enum import IntEnum
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.db import transaction, IntegrityError
@@ -12,6 +13,7 @@ from django.contrib.auth import (
     get_user_model,
 )
 from django.contrib.auth.password_validation import validate_password
+from allauth.account.adapter import get_adapter
 import re, unicodedata
 
 
@@ -28,7 +30,29 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create a user with encrypted password and return the user"""
-        return get_user_model().objects.create_user(**validated_data)
+        # return get_user_model().objects.create_user(**validated_data)
+
+        password = validated_data.pop("password")
+        email = validated_data["email"]
+
+        try:
+            with transaction.atomic():
+                User = get_user_model()
+                user = User.objects.create_user(password=password, **validated_data)
+
+                EmailAddress.objects.update_or_create(
+                    user=user,
+                    emai=user.email,
+                    defaults={"primary": True, "verified": False},
+                )
+
+                adapter = get_adapter()
+                transaction.on_commit(lambda: adapter.send_confirmation_mail(user, None))
+                return user
+        except IntegrityError:
+            raise serializers.ValidationError(
+                {"email": ["This email is already registered."]}
+            )
 
     def update(self, instance, validated_data):
         """Update a user and return the user"""

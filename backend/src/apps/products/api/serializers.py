@@ -43,15 +43,15 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Handles product creation"""
-        print("CREATING...")
-        print(f"Validated Data: {validated_data}")
+        # print("CREATING...")
+        # print(f"Validated Data: {validated_data}")
         tags_raw = self.initial_data.get('tags', '[]')
         try:
             tags_data = json.loads(tags_raw)
         except json.JSONDecodeError:
             tags_data = []
         validated_data.pop('tags', None)
-        print(f"Parsed Tags Data: {tags_data}")
+        # print(f"Parsed Tags Data: {tags_data}")
 
         product = Product.objects.create(**validated_data)
 
@@ -59,7 +59,6 @@ class ProductSerializer(serializers.ModelSerializer):
             tag_name = tag_data.get('name')
             if tag_name:
                 tag, _ = ProductTag.objects.get_or_create(name=tag_name)
-                print(f"Tag object: {tag}")
                 product.tags.add(tag)
 
         return product
@@ -73,7 +72,7 @@ class ProductSerializer(serializers.ModelSerializer):
             tags_data = []
 
         validated_data.pop('tags', None)
-        print(f"Updated Parsed Tags Data: {tags_data}")
+        # print(f"Updated Parsed Tags Data: {tags_data}")
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value) #update fields
@@ -81,7 +80,7 @@ class ProductSerializer(serializers.ModelSerializer):
             tag_name = tag_data.get('name')
             if tag_name:
                 tag, _ = ProductTag.objects.get_or_create(name=tag_name)
-                print(f"Updated Tag Object: {tag}")
+                # print(f"Updated Tag Object: {tag}")
                 instance.tags.add(tag)
 
         instance.save()

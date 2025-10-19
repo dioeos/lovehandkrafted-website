@@ -65,7 +65,7 @@ def send_newsletter_view(request):
             #attach HTML content to email instance
             msg.attach_alternative(html_content, "text/html")
             msg.content_subtype = "html" 
-            print(msg.message())
+            # print(msg.message())
             msg.send()
             sent_count += 1
         except Exception as e:

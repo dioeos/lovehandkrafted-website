@@ -33,5 +33,5 @@ urlpatterns = [
 
     path(f"{API_PREFIX}/newsletter/", include("apps.newsletter.api.urls")),
 
-    path(f"{API_PREFIX}/products/", include("apps.products.api.urls")),
+    path(f"{API_PREFIX}/", include("apps.products.api.urls")),
 ]

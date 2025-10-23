@@ -1,6 +1,7 @@
-from .models import Product
-from .api.serializers import ProductSerializer
+from .models import Product, ProductTag
+from .api.serializers import ProductSerializer, ProductTagSerializer
 
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import action
@@ -177,3 +178,11 @@ class ProductViewSet(viewsets.ModelViewSet):
         obj = get_object_or_404(Product, slug=slug)
         data = self.get_serializer(obj).data
         return Response(data)
+
+class ProductTagViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows viewing (and optionally creating) product tags.
+    """
+    queryset = ProductTag.objects.all().order_by("name")
+    serializer_class = ProductTagSerializer
+    permission_classes = [IsAuthenticated]

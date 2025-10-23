@@ -51,16 +51,18 @@ const VendorAddProducts = () => {
       const formData = new FormData();
       formData.append("name", name.trim());
       formData.append("description", description.trim());
-      formData.append("default_price", defaultPrice.trim());
-      formData.append("quantity", quantity.trim());
-      if (imageFile) formData.append("thumbnail", imageFile);
-      formData.append("tags", JSON.stringify(tags.map((t) => t.id)));
+      formData.append("default_price", String(defaultPrice).trim());
+      formData.append("quantity", String(quantity).trim());
+      if (imageFile) formData.append("image", imageFile);
+      const tagsPayload = JSON.stringify(tags.map((t) => ({ name: t.name })));
+      formData.append("tags", tagsPayload);
 
       const response = await api.post("/products/", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      console.log("Product added:", response.data);
       setSuccess(true);
       setName("");
       setDescription("");
@@ -69,8 +71,20 @@ const VendorAddProducts = () => {
       setImageFile(null);
       setTags([]);
     } catch (err) {
-      console.error(err);
-      setError("Something went wrong while creating the product.");
+      const data = err?.response?.data;
+      console.error("Create product failed:", data || err);
+      const firstFieldMsg =
+        data?.name?.[0] ??
+        data?.description?.[0] ??
+        data?.default_price?.[0] ??
+        data?.quantity?.[0] ??
+        data?.tags?.[0] ??
+        data?.image?.[0] ??
+        data?.detail ??
+        (typeof data === "object" ? JSON.stringify(data) : String(err));
+      setError(
+        firstFieldMsg || "Something went wrong while creating the product.",
+      );
     } finally {
       setLoading(false);
     }

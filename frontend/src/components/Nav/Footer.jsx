@@ -29,7 +29,7 @@ const Footer = () => {
           exit="exit"
         >
           <span className="text-[#9f9689]">Based in: </span>
-          <span className="text-[#352f36]">Manila, PH</span>
+          <span className="text-[#352f36]">Sorsogon, PH</span>
         </motion.li>
       </ul>
 
@@ -42,7 +42,7 @@ const Footer = () => {
           exit="exit"
         >
           <span className="text-[#9f9689]">Images by: </span>
-          <span className="text-[#352f36]">Maria Dioneda</span>
+          <span className="text-[#352f36]">Samantha Espedido</span>
         </motion.li>
       </ul>
     </div>

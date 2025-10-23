@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const PhilippinesClock = () => {
   const [time, setTime] = useState(new Date());
@@ -20,22 +20,22 @@ const PhilippinesClock = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const formattedTime = time.toLocaleTimeString('en-PH', {
-    timeZone: 'Asia/Manila',
-    hour: '2-digit',
-    minute: '2-digit',
+  const formattedTime = time.toLocaleTimeString("en-PH", {
+    timeZone: "Asia/Manila",
+    hour: "2-digit",
+    minute: "2-digit",
     hour12: true,
   });
 
-  const formattedDay = time.toLocaleDateString('en-PH', {
-    timeZone: 'Asia/Manila',
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
+  const formattedDay = time.toLocaleDateString("en-PH", {
+    timeZone: "Asia/Manila",
+    weekday: "long",
+    month: "long",
+    day: "numeric",
   });
 
   return (
-    <div className="satoshi text-white text-[.7rem] md:text-[1rem]">
+    <div className="satoshi text-white text-[.5rem] md:text-[1rem]">
       <div>{formattedDay}</div>
       <div>{formattedTime}</div>
     </div>

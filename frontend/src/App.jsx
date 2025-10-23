@@ -35,8 +35,10 @@ import VendorAccounts from "./pages/VendorDashboard/VendorAccounts";
 import VendorFinances from "./pages/VendorDashboard/VendorFinances";
 import VendorProducts from "./pages/VendorDashboard/VendorProducts";
 import VendorAddProducts from "./pages/VendorDashboard/VendorAddProducts";
-import VendorEditProducts from "./pages/VendorDashboard/VendorEditProducts.jsx";
-import ProductPage from "./pages/ProductPage/ProductPage.jsx";
+import VendorEditProducts from "./pages/VendorDashboard/VendorEditProducts";
+import VendorTags from "./pages/VendorDashboard/VendorTags";
+import VendorAddTags from "./pages/VendorDashboard/VendorAddTags";
+import ProductPage from "./pages/ProductPage/ProductPage";
 
 function App() {
   return (
@@ -112,6 +114,11 @@ function App() {
               <Route
                 path="/vendor-dashboard/products/edit/:id"
                 element={<VendorEditProducts />}
+              />
+              <Route path="/vendor-dashboard/tags" element={<VendorTags />} />
+              <Route
+                path="/vendor-dashboard/tags/add"
+                element={<VendorAddTags />}
               />
             </Route>
           </Route>

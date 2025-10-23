@@ -1,6 +1,7 @@
-from .models import Product
-from .api.serializers import ProductSerializer
+from .models import Product, ProductTag
+from .api.serializers import ProductSerializer, ProductTagSerializer
 
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import action
@@ -8,6 +9,8 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 import os
 import uuid
@@ -85,6 +88,11 @@ class ProductViewSet(viewsets.ModelViewSet):
     """Product view set that provides CRUD operations for products"""
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = {
+        "tags": ["exact"],  # /api/products/?tags=<tag_uuid>
+    }
 
     def perform_create(self, serializer):
         image = self.request.FILES.get("image")
@@ -177,3 +185,11 @@ class ProductViewSet(viewsets.ModelViewSet):
         obj = get_object_or_404(Product, slug=slug)
         data = self.get_serializer(obj).data
         return Response(data)
+
+class ProductTagViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows viewing (and optionally creating) product tags.
+    """
+    queryset = ProductTag.objects.all().order_by("name")
+    serializer_class = ProductTagSerializer
+    permission_classes = [IsAuthenticated]

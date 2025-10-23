@@ -32,8 +32,11 @@ const Shop = () => {
     const fetchProducts = async () => {
       try {
         const response = await api.get("/products/");
-        setProducts(response.data);
-        setFilteredProducts(response.data); //default
+        const activeProducts = response.data.filter(
+          (product) => product.active === true,
+        );
+        setProducts(activeProducts);
+        setFilteredProducts(activeProducts); //default
       } catch (error) {
         console.error(error);
       }

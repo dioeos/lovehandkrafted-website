@@ -6,6 +6,7 @@ export const Card = ({ productName, thumbnail, price, link }) => {
     <Link
       to={link}
       className="block w-full p-1 transition-transform duration-300 ease-in-out hover:scale-105 focus:scale-105 focus:outline-none"
+      style={{ textDecoration: "none" }}
     >
       <div
         id="card-wrapper"

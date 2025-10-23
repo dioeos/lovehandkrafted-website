@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_filters",
     # ---- Django REST Framework ----
     "rest_framework",
     "rest_framework.authtoken",
@@ -152,6 +153,12 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',
     # ]
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_PARSER_CLASSES": (
+            "rest_framework.parsers.JSONParser",
+            "rest_framework.parsers.FormParser",
+            "rest_framework.parsers.MultiPartParser",
+        )
 }
 
 REST_AUTH = {

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 import uuid
+from django.db.models.functions import Lower
 
 class Product(models.Model):
     """Represents an individual product item"""
@@ -38,6 +39,15 @@ class ProductTag(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, unique=False)
     products = models.ManyToManyField(Product, related_name="tags")
+    product_count = models.IntegerField(default=0)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower('name'),
+                name='uniq_producttag_name_ci',   # case-insensitive unique
+            )
+        ]
 
     def __str__(self):
         return self.name

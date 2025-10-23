@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 import os
 import uuid
@@ -86,6 +88,11 @@ class ProductViewSet(viewsets.ModelViewSet):
     """Product view set that provides CRUD operations for products"""
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = {
+        "tags": ["exact"],  # /api/products/?tags=<tag_uuid>
+    }
 
     def perform_create(self, serializer):
         image = self.request.FILES.get("image")

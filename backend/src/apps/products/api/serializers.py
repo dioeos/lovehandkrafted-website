@@ -1,21 +1,47 @@
 from rest_framework import serializers
 from ..models import Product, ProductTag
+from django.db import IntegrityError
 import json
 
 class ProductTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductTag
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'product_count']
 
-    def validate_name(self, value):
-        """Ensure that tag name is unique"""
-        return value
+    def validate_name(self, value: str):
+        name = (value or "").strip()
+        if not name:
+            raise serializers.ValidationError("Please enter a tag name.")
+
+        # Case-insensitive uniqueness check (fast fail)
+        qs = ProductTag.objects.all()
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+
+        if qs.filter(name__iexact=name).exists():
+            raise serializers.ValidationError("A tag with this name already exists.")
+        return name
 
     def create(self, validated_data):
-        """Tag create method, fetches or creates"""
-        tag_name = validated_data.get('name')
-        tag, _ = ProductTag.objects.get_or_create(name=tag_name)
-        return tag
+        name = validated_data['name']
+        try:
+            # Use create so validation/DB constraint are authoritative
+            return ProductTag.objects.create(name=name)
+        except IntegrityError:
+            # Handle race two clients creating same name at once
+            raise serializers.ValidationError({
+                "name": ["A tag with this name already exists."]
+            })
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        try:
+            instance.save()
+        except IntegrityError:
+            raise serializers.ValidationError({
+                "name": ["A tag with this name already exists."]
+            })
+        return instance
 
 
 class ProductSerializer(serializers.ModelSerializer):

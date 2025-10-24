@@ -104,19 +104,19 @@ const Footer = () => {
 
               <div id="icons-folder">
                 <div className="flex justify-center items-center gap-4 text-3xl mt-4 text-[#FAF9F6]">
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    <FaFacebook className="text-[1.2rem] md:text-[2rem] text-[#FAF9F6] opacity-60 hover:opacity-100" />
-                  </a>
-
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    <FaTwitter className="text-[1.2rem] md:text-[2rem] text-[#FAF9F6] opacity-60 hover:opacity-100" />
-                  </a>
-
                   <a
                     href="https://www.facebook.com/Lovehandcrafted/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
+                    <FaFacebook className="text-[1.2rem] md:text-[2rem] text-[#FAF9F6] opacity-60 hover:opacity-100" />
+                  </a>
+
+                  <a href="" target="_blank" rel="noopener noreferrer">
+                    <FaTwitter className="text-[1.2rem] md:text-[2rem] text-[#FAF9F6] opacity-60 hover:opacity-100" />
+                  </a>
+
+                  <a href="" target="_blank" rel="noopener noreferrer">
                     <FaInstagram className="text-[1.2rem] md:text-[2rem] text-[#FAF9F6] opacity-60 hover:opacity-100" />
                   </a>
                 </div>

@@ -89,7 +89,7 @@ const Footer = () => {
           <div id="left-container" className="flex gap-10">
             <div id="version-header" className="text-[#FAF9F6]">
               <p className="opacity-50">Version</p>
-              <p className="text-[.7rem] md:text-[1rem]">2025 &copy; Edition</p>
+              <p className="text-[.5rem] md:text-[1rem]">2025 &copy; Edition</p>
             </div>
 
             <div id="time-header" className="text-[#FAF9F6]">

@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Footer from "../../components/Footer/Footer";
 import { Extras } from "../Index/Extras";
 
-const Contact = () => {
+const About = () => {
   const circleContainer = useRef(null);
   const { scrollYProgress } = useScroll({
     target: circleContainer,
@@ -80,4 +80,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default About;

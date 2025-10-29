@@ -1,1 +1,14 @@
-node_modules
+**/__pycache__/
+**/*.pyc
+*.pytest_cache/
+*.sqlite3
+.env
+.env.*
+.git
+.gitignore
+.idea
+.vscode
+media/
+node_modules/
+dist/
+build/
